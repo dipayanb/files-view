@@ -26,6 +26,7 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
 
   app.import(app.bowerDirectory + '/bootstrap/dist/js/bootstrap.js');
+  /*
   app.import(app.bowerDirectory + '/bootstrap/fonts/glyphicons-halflings-regular.eot', {
     destDir: 'fonts'
   });
@@ -37,7 +38,9 @@ module.exports = function(defaults) {
   });
   app.import(app.bowerDirectory + '/bootstrap/fonts/glyphicons-halflings-regular.woff', {
     destDir: 'fonts'
-  });
+  });*/
+
+  app.import('bower_components/moment/moment.js');
 
   return app.toTree();
 };

@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-5">
+    {{files-breadcrumb path=path}}
+  </div>
+  <!-- Include directory name and rename button -->
+  <div class="col-md-offset-2 col-md-5">
+    <p class="pull-right">
+      <!-- Add components -->
+      <button type="button" class="btn btn-primary">{{fa-icon icon="plus"}} New Directory</button>
+      <button type="button" class="btn btn-success">{{fa-icon icon="upload"}} Upload</button>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="well well-sm col-md-12">
+    This is the context menu section. Need to work on it later
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div style="position:relative; height: 1000px;">
+      {{#ember-collection items=model cell-layout=(fixed-grid-layout 1800 40) class="list-group" as |file index|}}
+        <div class="list-group-item col-md-12">
+          {{#if file.isDirectory}}
+            {{#link-to 'files' (query-params path=file.path)}}{{fa-icon "folder-o"}} {{file.name}}{{/link-to}}
+          {{else}}
+            {{fa-icon "file-o"}} {{file.name}}
+          {{/if}}
+        </div>
+      {{/ember-collection}}
+    </div>
+  </div>
+</div>
+
+{{outlet}}

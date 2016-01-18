@@ -1,0 +1,24 @@
+{{#if collapsingRequired}}
+  <li>
+    <div class="dropdown">
+      <a class="dropdown-toggle" d="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {{#fa-stack}}
+          {{fa-icon "folder-o" stack=2}}
+          {{fa-icon "caret-down" stack=1}}
+        {{/fa-stack}}
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        {{#each collapsedCrumbs as |crumb|}}
+          <li>{{#link-to 'files' (query-params path=crumb.path)}}{{fa-icon "folder-o"}} {{crumb.name}}{{/link-to}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  </li>
+{{/if}}
+{{#each expandedCrumbs as |crumb|}}
+  {{#if crumb.last}}
+    <li class="active">{{crumb.name}}</li>
+  {{else}}
+    <li>{{#link-to 'files' (query-params path=crumb.path)}}{{crumb.name}}{{/link-to}}</li>
+  {{/if}}
+{{/each}}
