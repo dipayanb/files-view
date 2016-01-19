@@ -16,3 +16,29 @@
 // Dropdown customizations
 @dropdown-link-hover-color: @link-hover-color;
 @dropdown-link-color: @link-color;
+
+
+.container-wrap {
+  margin-top: 5px;
+}
+
+.files-header {
+  padding-bottom: 10px;
+  border-bottom: 2px solid lighten(@gray-light, 25%);
+}
+
+.file-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid darken(@gray-lighter, 5%);
+  &:hover {
+    background-color: @table-bg-hover;
+  }
+}
+.row-hover {
+  //background-color: @table-bg-hover;
+}
+.row-selected {
+  background-color: lighten(@component-active-bg, 40%);
+  //border-bottom: 1px solid lighten(@component-active-bg, 10%);
+}

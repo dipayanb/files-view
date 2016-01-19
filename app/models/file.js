@@ -10,7 +10,7 @@ export default DS.Model.extend({
   len                               : DS.attr('number'),
   owner                             : DS.attr('string'),
   group                             : DS.attr('string'),
-  premission                        : DS.attr('string'),
+  permission                        : DS.attr('string'),
   accessTime                        : DS.attr('iso-date'),
   modificationTime                  : DS.attr('iso-date'),
   blockSize                         : DS.attr('number'),

@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-12 files-header">
+    {{#each columnsConfig as |column|}}
+      <div class={{column.columnClass}}>
+        <strong>{{column.title}}</strong>
+        {{#if column.sortable}}
+          <span class="">{{fa-icon icon=(get-sorting-icon column.sortOrder)}}</span>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div style={{containerStyle}}>
+      {{#ember-collection items=items cell-layout=(fixed-grid-layout currentWidth 41) as |file index|}}
+        {{yield file index}}
+      {{/ember-collection}}
+    </div>
+  </div>
+</div>
