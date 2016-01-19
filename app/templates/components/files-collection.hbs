@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12 files-header">
     {{#each columnsConfig as |column|}}
-      <div class={{column.columnClass}}>
+      <div class={{column.columnClass}} {{action 'rotateSort' column}}>
         <strong>{{column.title}}</strong>
         {{#if column.sortable}}
           <span class="">{{fa-icon icon=(get-sorting-icon column.sortOrder)}}</span>

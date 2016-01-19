@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   currentWidth: 1000,
   currentHeight: 600,
   columnsConfig: [],
+  sortOptions: [-1, 0, 1],
 
   containerStyle: Ember.computed('currentHeight', function() {
     var height = this.get('currentHeight');
@@ -34,6 +35,25 @@ export default Ember.Component.extend({
   didInsertElement: function() {
     var func = this.windowResized(this);
     func();
+  },
 
+  actions: {
+    rotateSort: function(column) {
+      if(!column['sortable']) {
+        return false;
+      }
+      var sortOptions = this.get('sortOptions');
+      // Resetting the current sort order
+      this.get('columnsConfig').forEach(function(entry) {
+        if(entry['key'] !== column['key']) {
+          Ember.set(entry, 'sortOrder', sortOptions[1]);
+        }
+      });
+      var currentSortOrder = column['sortOrder'];
+      var currentSortOrderIndex = sortOptions.indexOf(currentSortOrder);
+      var nextSortOrderIndex = (currentSortOrderIndex + 1) % sortOptions.length;
+      Ember.set(column, 'sortOrder', sortOptions[nextSortOrderIndex]);
+      this.sendAction('sortAction', column);
+    }
   }
 });

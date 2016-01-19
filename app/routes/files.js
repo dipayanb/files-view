@@ -9,5 +9,10 @@ export default Ember.Route.extend({
   model: function(params) {
     this.store.unloadAll('file');
     return this.store.query('file', {path: params.path});
+  },
+
+  afterModel: function() {
+    var fileController = this.controllerFor('files');
+    fileController.set('searchText', '');
   }
 });

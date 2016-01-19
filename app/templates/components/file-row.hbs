@@ -1,7 +1,7 @@
 <div class="row">
   <div class={{get-value-from-columns columnHeaders 'name' 'columnClass'}}>
     {{#if file.isDirectory}}
-      {{#link-to 'files' (query-params path=file.path) preventDefault=true}}{{fa-icon "folder-o"}} {{file.name}}{{/link-to}}
+      {{#link-to 'files' (query-params path=file.path) bubbles=false}}{{fa-icon "folder-o"}} {{file.name}}{{/link-to}}
     {{else}}
       {{fa-icon "file-o"}} {{file.name}}
     {{/if}}
