@@ -25,9 +25,15 @@
   <div class="col-md-12" id="filesCollectionView">
     {{#files-collection items=arrangedContent
       columnsConfig=columns
+      sortEnabled=sortEnabled
       sortAction="sortFiles"
+      resetSelection="deselectAll"
       containerId="filesCollectionView" as |file index|}}
-      {{file-row file=file columnHeaders=columns}}
+      {{file-row index=index
+        file=file
+        columnHeaders=columns
+        singleSelectAction="selectSingle"
+        multiSelectAction="selectMultiple"}}
     {{/files-collection}}
   </div>
 </div>

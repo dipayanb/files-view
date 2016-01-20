@@ -1,20 +1,29 @@
 import Ember from 'ember';
+import { EKMixin, keyUp } from 'ember-keyboard';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(EKMixin, {
   minHeight: 600,
   currentWidth: 1000,
   currentHeight: 600,
   columnsConfig: [],
   sortOptions: [-1, 0, 1],
 
+  resizeView: Ember.on('init', function() {
+    $(window).resize(this.windowResized(this));
+  }),
+
+  activateKeyboard: Ember.on('init', function() {
+    this.set('keyboardActivated', true);
+  }),
+
+  resetAllSelection: Ember.on(keyUp('Escape'), function() {
+    this.sendAction('resetSelection');
+  }),
+
   containerStyle: Ember.computed('currentHeight', function() {
     var height = this.get('currentHeight');
     var style = 'position: relative; height: ' + height + 'px';
     return style.htmlSafe();
-  }),
-
-  resizeView: Ember.on('init', function() {
-    $(window).resize(this.windowResized(this));
   }),
 
   windowResized: function(scope) {
@@ -39,7 +48,7 @@ export default Ember.Component.extend({
 
   actions: {
     rotateSort: function(column) {
-      if(!column['sortable']) {
+      if(!column['sortable'] || this.get('sortEnabled') !== true) {
         return false;
       }
       var sortOptions = this.get('sortOptions');
