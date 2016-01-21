@@ -2,8 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: "span",
-  enabledModal: false,
-
+  enabledModal: false, // was never used
   actions: {
     createDirectory: function() {
       alert('directory created')
@@ -19,6 +18,4 @@ export default Ember.Component.extend({
       $("#createDirectoryModal").modal('show');
     }
   }
-
-
 });
