@@ -7,10 +7,6 @@ export default Ember.Controller.extend({
   queryParams: ['path'],
   path: '/',
   columns: columnConfig,
-  sortProperty: [],
-  sortEnabled: Ember.computed('fileSelectionService.files.length', function() {
-    return this.get('fileSelectionService.files.length') === 0;
-  }),
 
   // This is required as the validSearchText will be debounced and will not be
   // called at each change of searchText. searchText is required so that sub
@@ -19,7 +15,20 @@ export default Ember.Controller.extend({
   searchText: '',
   validSearchText: '',
 
+  sortProperty: [],
+  sortEnabled: Ember.computed('fileSelectionService.files.length', function() {
+    return this.get('fileSelectionService.files.length') === 0;
+  }),
+
+  allSelected: Ember.computed('fileSelectionService.files.length', function() {
+    return this.get('fileSelectionService.files.length') === this.get('model.length');
+  }),
+
   sortedContent: Ember.computed.sort('model', 'sortProperty'),
+
+  resetSelection: Ember.observer('path', function() {
+    this.get('fileSelectionService').reset();
+  }),
 
   arrangedContent: Ember.computed('model', 'sortProperty', 'validSearchText', function() {
     var searchText = this.get('validSearchText');
@@ -68,6 +77,13 @@ export default Ember.Controller.extend({
         var filesInRange = this._getFilesInRange(indexRange[0], indexRange[1]);
         this.get('fileSelectionService').deselectAll();
         this.get('fileSelectionService').selectFiles(filesInRange);
+      }
+    },
+
+    selectAll: function(selectStatus) {
+      this.get('fileSelectionService').deselectAll();
+      if(selectStatus === false) {
+        this.get('fileSelectionService').selectFiles(this.get('sortedContent'));
       }
     },
 

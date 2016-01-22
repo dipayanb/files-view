@@ -20,6 +20,10 @@ export default Ember.Component.extend(EKMixin, {
     this.sendAction('resetSelection');
   }),
 
+  selectAll: Ember.on(keyUp('shift+s'), function() {
+    this.sendAction('selectAllAction', false);
+  }),
+
   containerStyle: Ember.computed('currentHeight', function() {
     var height = this.get('currentHeight');
     var style = 'position: relative; height: ' + height + 'px';
@@ -30,8 +34,8 @@ export default Ember.Component.extend(EKMixin, {
     return function() {
       Ember.run.later(function() {
         var currentWidth = $("#" + scope.get('containerId')).width();
-        var windowHeight = $(window).height()
-        var relativeHeight = windowHeight - 150;
+        var windowHeight = $(window).height();
+        var relativeHeight = windowHeight - 180;
         if(relativeHeight < scope.get('minHeight')) {
           relativeHeight = scope.get('minHeight');
         }

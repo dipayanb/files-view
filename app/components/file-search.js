@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['input-group'],
-  classNameBindings: ['expanded::col-md-6', 'expanded::col-md-offset-6'],
+  classNameBindings: ['expanded::col-md-9', 'expanded::col-md-offset-3'],
   expanded: false,
 
   searchText: '',

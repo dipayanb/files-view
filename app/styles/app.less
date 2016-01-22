@@ -17,6 +17,10 @@
 @dropdown-link-hover-color: @link-hover-color;
 @dropdown-link-color: @link-color;
 
+body {
+  min-width: 1280px;
+  min-height: 800px;
+}
 
 .container-wrap {
   margin-top: 5px;
@@ -41,4 +45,28 @@
 }
 .row-selected {
   background-color: lighten(@component-active-bg, 40%) !important;
+}
+
+.context-menu-row {
+  padding-top: 5px;
+    li > a {
+      text-decoration: none;
+    }
+    li.disabled > a {
+      color: @gray-light;
+      cursor: default;
+    }
+
+    .context-text {
+      padding: 2px 15px;
+      background: darken(@state-warning-bg, 25%);
+      border: 1px solid @state-warning-border;
+      position: absolute;
+      margin-top: 23px;
+      border-radius: @border-radius-large;
+    }
+
+    .context-menu-entries {
+      margin-bottom: 0px;
+    }
 }
