@@ -67,7 +67,11 @@ export default Ember.Controller.extend({
     */
     selectMultiple: function(file, sticky) {
       if(!sticky) {
-        this.get('fileSelectionService').selectFiles([file]);
+        if(file.get('isSelected')) {
+          this.get('fileSelectionService').deselectFile(file);
+        } else {
+          this.get('fileSelectionService').selectFiles([file]);
+        }
       } else {
         var lastFileSelected = this.get('fileSelectionService.lastFileSelected');
         var indexRange = this._getIndexRangeBetweenfiles(lastFileSelected, file);
@@ -90,6 +94,11 @@ export default Ember.Controller.extend({
     /* Deselects the current selections */
     deselectAll: function() {
       this.get('fileSelectionService').deselectAll();
+    },
+
+    //Context Menu actions
+    openFolder: function(path) {
+      this.transitionToRoute({queryParams: {path: path}});
     }
   },
 

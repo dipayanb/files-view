@@ -10,17 +10,25 @@ export default Ember.Service.extend({
     return this.get('files.length') - this.get('filesCount');
   }),
 
-  init: function() {
-    console.log("Selection service created!!!");
-    this._super();
-  },
-
   selectFiles: function(files) {
     files.forEach((file) => {
       file.set('isSelected', true);
       this.get('files').pushObject(file);
       this.set('lastFileSelected', file);
     });
+  },
+
+  deselectFile: function(file) {
+
+    if (file.get('isSelected')) {
+        file.set('isSelected', false);
+    }
+
+    this.set('files', this.get('files').without(file));
+    if(file === this.get('lastFileSelected')) {
+      this.set('lastFileSelected', this.get('files').objectAt(this.get('files.length') - 1));
+    }
+
   },
 
   deselectAll: function() {

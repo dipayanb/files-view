@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   fileSelectionService: Ember.inject.service('files-selection'),
+  modalEventBus: Ember.inject.service('modal-event-bus'),
+
   classNames: ['row', 'context-menu-row'],
   selectedFilesCount: Ember.computed.oneWay('fileSelectionService.filesCount'),
   selectedFolderCount: Ember.computed.oneWay('fileSelectionService.folderCount'),
@@ -16,12 +18,27 @@ export default Ember.Component.extend({
   }),
   lastSelectedFile: Ember.computed.oneWay('fileSelectionService.lastFileSelected'),
 
+  didInitAttrs: function() {
+    // Register different modal so that they can be controlled from outside
+    this.get('modalEventBus').registerModal('ctx-open');
+    this.get('modalEventBus').registerModal('ctx-rename');
+    this.get('modalEventBus').registerModal('ctx-permission');
+    this.get('modalEventBus').registerModal('ctx-delete');
+    this.get('modalEventBus').registerModal('ctx-copy');
+    this.get('modalEventBus').registerModal('ctx-move');
+    this.get('modalEventBus').registerModal('ctx-download');
+    this.get('modalEventBus').registerModal('ctx-concatenate');
+  },
+
   actions: {
     open: function(event) {
       if (this.get('isSingleSelected')) {
         var file = this.get('fileSelectionService.files').objectAt(0);
         if (file.get('isDirectory')) {
           console.log('need to transition to ' + file.get('path'));
+          this.sendAction('openFolder', file.get('path'));
+        } else {
+          this.get('modalEventBus').showModal('ctx-open');
         }
       }
 
@@ -31,7 +48,7 @@ export default Ember.Component.extend({
       if (!this.get('isSelected')) {
         return false;
       }
-      console.log("Delete called!!!");
+      this.get('modalEventBus').showModal('ctx-delete');
     },
 
     copy: function(event) {
@@ -58,7 +75,7 @@ export default Ember.Component.extend({
     },
 
     concatenate: function(event) {
-      if (!this.get('isSelected')) {
+      if (!this.get('isMultiSelected')) {
         return false;
       }
       console.log("Concatenate called!!!");
@@ -68,7 +85,11 @@ export default Ember.Component.extend({
       if (!this.get('isSingleSelected')) {
         return false;
       }
-      console.log('rename called!!!');
+      this.get('modalEventBus').showModal('ctx-rename');
+    },
+
+    modalClosed: function(modalName) {
+      this.get('modalEventBus').resetModal(modalName);
     }
   }
 
