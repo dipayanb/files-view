@@ -9,9 +9,10 @@ export default Ember.Service.extend(FileOperationMixin, {
   isLoading: false,
   fileFetchFinished: false,
   hasError: false,
-  endIndex: Ember.computed('startIndex', () => {
-    return this.get('startIndex') + this.get('offset');
-  }),
+
+  endIndex: function() {
+      return this.get('startIndex') + this.get('offset');
+  }.property('startIndex'),
 
   reset: function() {
     this.set('fileContent', '');
@@ -24,27 +25,55 @@ export default Ember.Service.extend(FileOperationMixin, {
   },
 
   getNextContent: function() {
-    this.set('startIndex', (this.get('startIndex') + this.get('offset')));
     return this._getContent();
   },
 
   _getContent: function() {
+
+    var _self = this;
+
     if(this.get('fileFetchFinished')) {
       return false;
     }
-    var basePath = getBaseFilesURLPath();
-    var currentFetchPath = `${basePath}/preview/file?path=${this.get(path)}&start=${this.get('startIndex')}&end=${this.get('endIndex')}`;
+
+    console.log('startIndex:: ' +  this.get('startIndex'));
+    console.log('endIndex:: ' +  this.get('endIndex'));
+
+    //var currentFetchPath = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/preview/file?path=/user/hue/airline/airline/2009.csv.bz2&start=' + this.get('startIndex') + '&end='+ this.get('endIndex');
+    var currentFetchPath = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/preview/file?path=/apps/hive/warehouse/nyse_stocks/NYSE-2000-2001.tsv.gz&start=' + this.get('startIndex') + '&end='+ this.get('endIndex');
+
+    /* TODO:: remove above hardcoded file url and use getBaseFilesURLPath and dynamic path for particular file. Use below two lines.  */
+    //var basePath = getBaseFilesURLPath();
+    //var currentFetchPath = `${basePath}/preview/file?path=${this.get(path)}&start=${this.get('startIndex')}&end=${this.get('endIndex')}`;
+
+
     this.set('isLoading', true);
+
     Ember.$.ajax({
-      url: currentFetchPath,
-      dataType: 'json',
-      type: 'get',
-      async: false,
-      contentType: 'application/json',
-      success: this._fetchSuccess,
-      error: this._fetchError,
-      beforeSend: this._beforeSend(xhr)
+          url: currentFetchPath,
+          dataType: 'json',
+          type: 'get',
+          contentType: 'application/json',
+          success: this._fetchSuccess,
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader ('X-Requested-By', 'ambari');
+              xhr.setRequestHeader ('Authorization', 'Basic YWRtaW46YWRtaW4=');
+          },
+          success: function( response, textStatus, jQxhr ){
+              _self.set('fileContent', _self.get('fileContent') + response.data);
+              _self.set('fileFetchFinished', response.isFileEnd);
+              _self.set('isLoading', false);
+
+          },
+          error: function(jQxhr, textStatus, errorThrown) {
+             console.log("Preview Fail pagecontent: " + errorThrown);
+             _self.set('hasError', true);
+             _self.set('isLoading', false);
+          }
     })
+
+    this.set('startIndex', (this.get('startIndex') + this.get('offset')));
+
   },
 
   _fetchSuccess: function(response, textStatus, jQxhr) {
@@ -59,11 +88,5 @@ export default Ember.Service.extend(FileOperationMixin, {
     this.set('isLoading', false);
   },
 
-  // TODO: remove this finally
-  _beforeSend: function(jQxhr) {
-    jQxhr.setRequestHeader({
-      'X-Requested-By': 'ambari',
-      'Authorization': 'Basic YWRtaW46YWRtaW4='
-    });
-  }
+
 });
