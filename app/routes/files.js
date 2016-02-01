@@ -14,5 +14,11 @@ export default Ember.Route.extend({
   afterModel: function() {
     var fileController = this.controllerFor('files');
     fileController.set('searchText', '');
+  },
+
+  actions: {
+    refreshCurrentRoute: function() {
+      this.refresh();
+    }
   }
 });

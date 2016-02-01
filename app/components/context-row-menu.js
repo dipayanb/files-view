@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   fileSelectionService: Ember.inject.service('files-selection'),
   modalEventBus: Ember.inject.service('modal-event-bus'),
+  alertMessages: Ember.inject.service('alert-messages'),
 
   classNames: ['row', 'context-menu-row'],
   selectedFilesCount: Ember.computed.oneWay('fileSelectionService.filesCount'),
@@ -28,6 +29,7 @@ export default Ember.Component.extend({
     this.get('modalEventBus').registerModal('ctx-move');
     this.get('modalEventBus').registerModal('ctx-download');
     this.get('modalEventBus').registerModal('ctx-concatenate');
+    window.abcd = this.get('alertMessages');
   },
 
   actions: {
@@ -35,8 +37,7 @@ export default Ember.Component.extend({
       if (this.get('isSingleSelected')) {
         var file = this.get('fileSelectionService.files').objectAt(0);
         if (file.get('isDirectory')) {
-          console.log('need to transition to ' + file.get('path'));
-          this.sendAction('openFolder', file.get('path'));
+          this.sendAction('openFolderAction', file.get('path'));
         } else {
           this.get('modalEventBus').showModal('ctx-open');
         }
@@ -90,6 +91,11 @@ export default Ember.Component.extend({
 
     modalClosed: function(modalName) {
       this.get('modalEventBus').resetModal(modalName);
+    },
+
+    refreshCurrentRoute: function() {
+      this.get('fileSelectionService').reset();
+      this.sendAction('refreshCurrentRouteAction');
     }
   }
 

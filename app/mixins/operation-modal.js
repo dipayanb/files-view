@@ -41,15 +41,16 @@ export default Ember.Mixin.create(EKMixin, EKFirstResponderOnFocusMixin, {
     }
   }),
 
-  removeModalSubscription: Ember.on('didDestroyElement', function() {
-    this.set('isModalOpen', false);
-    this.get('modalEventBus').resetModal(this.get('name'));
-  }),
-
   actions: {
     /** close by action in the UI **/
+    close: function() {
+      this.$('.modal').modal('hide');
+    },
+
     closeModal: function() {
       this.$('.modal').off('hide.bs.modal');
+      this.set('isModalOpen', false);
+      this.get('modalEventBus').resetModal(this.get('name'));
       this.send('didCloseModal');
     },
 

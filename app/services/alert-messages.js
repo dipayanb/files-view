@@ -1,0 +1,85 @@
+import Ember from 'ember';
+
+
+/**
+  Shows alert flash and also creates `alert` objects in store. If creation of
+  `alert` objects in store pass `options.flashOnly` as `true`. The options
+  required for creating the `alert` objects are:
+  ```
+    options.status : Status XHR request if the message is a response to XHR request. Defaults to -1.
+    options.error: Detailed error to be displayed.
+  ```
+  Options required for ember-cli-flash can also be passed in the options to override the
+  default behaviour.
+*/
+export default Ember.Service.extend({
+  flashMessages: Ember.inject.service('flash-messages'),
+  store: Ember.inject.service('store'),
+
+  success: function(message, options = {}) {
+    this._clearMessagesIfRequired(options);
+    this._createAlert(message, 'success', options);
+    this.get('flashMessages').success(message, this._getOptions(options));
+  },
+
+  warn: function(message, options = {}) {
+    this._clearMessagesIfRequired(options);
+    this._createAlert(message, 'warn', options);
+    this.get('flashMessages').warn(message, this._getOptions(options));
+  },
+
+  info: function(message, options = {}) {
+    this._clearMessagesIfRequired(options);
+    this._createAlert(message, 'info', options);
+    this.get('flashMessages').info(message, this._getOptions(options));
+  },
+
+  danger: function(message, options = {}) {
+    this._clearMessagesIfRequired(options);
+    this._createAlert(message, 'danger', options);
+    this.get('flashMessages').danger(message, this._getOptions(options));
+  },
+
+  clearMessages: function() {
+    this.get('flashMessages').clearMessages();
+  },
+
+  _createAlert: function(message, type, options) {
+    var data = {};
+    data.message = message;
+    data.id = this._getNextAlertId();
+    data.type = type;
+    data.status = options.status || -1;
+    data.trace = this._getDetailedError(options.trace);
+    delete options.status;
+    delete options.error;
+
+    if(options.flashOnly !== true) {
+      return this.get('store').createRecord('alert', data);
+    }
+  },
+
+  _getDetailedError: function(error) {
+    return error || '';
+  },
+
+  _getOptions: function(options = {}) {
+    var defaultOptions = {
+      priority: 100,
+      showProgress: true,
+      timeout: 6000
+    };
+    return Ember.merge(defaultOptions, options);
+  },
+
+  _getNextAlertId: function() {
+    return this.get('store').peekAll('alert').get('length') + 1;
+  },
+
+  _clearMessagesIfRequired: function(options = {}) {
+    var stackMessages = options.stackMessages || false;
+    if(stackMessages !== true) {
+      this.clearMessages();
+    }
+  }
+});

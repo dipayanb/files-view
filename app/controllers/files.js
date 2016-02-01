@@ -21,7 +21,7 @@ export default Ember.Controller.extend({
   }),
 
   allSelected: Ember.computed('fileSelectionService.files.length', function() {
-    return this.get('fileSelectionService.files.length') === this.get('model.length');
+    return this.get('fileSelectionService.files.length') !== 0 && this.get('fileSelectionService.files.length') === this.get('model.length');
   }),
 
   sortedContent: Ember.computed.sort('model', 'sortProperty'),

@@ -3,15 +3,28 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title">Rename</h3>
+          <h4 class="modal-title">{{fa-icon icon="edit"}} Rename {{#if selected.isDirectory}}Folder{{else}}File{{/if}}</h4>
         </div>
-        <div class="modal-body">
-          This is where the content will be renamed
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default">Cancel</button>
-          <button type="button" class="btn btn-primary">Delete</button>
-        </div>
+        <form>
+          <div class="modal-body">
+            <div class="form-group {{if hasError "has-error"}}">
+              <label>New name?</label>
+              {{input class="form-control" placeholder="New name..." value=selectionName}}
+              {{#if hasError}}<span class="help-block">{{errorMessage}}</span>{{/if}}
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <span class="spinner-wrap">
+              {{#if isUpdating}}
+                {{fa-icon "refresh" spin=true}}
+              {{/if}}
+            </span>
+            <button type="button" class="btn btn-default {{if isUpdating "disabled"}}" {{action 'close'}}>{{fa-icon icon="close"}} Cancel</button>
+            <button type="submit" class="btn btn-primary {{if isUpdating "disabled"}}" {{action 'rename'}}>{{fa-icon icon="edit"}} Rename</button>
+          </div>
+        </form>
+
       </div>
     </div>
   </div>
