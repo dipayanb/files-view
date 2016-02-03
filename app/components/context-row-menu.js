@@ -63,7 +63,7 @@ export default Ember.Component.extend({
       if (!this.get('isSelected')) {
         return false;
       }
-      console.log("move called!!!");
+      this.get('modalEventBus').showModal('ctx-move');
 
     },
 

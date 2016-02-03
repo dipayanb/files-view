@@ -26,6 +26,9 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
 
   app.import(app.bowerDirectory + '/bootstrap/dist/js/bootstrap.js');
+  app.import(app.bowerDirectory + '/bootstrap-treeview/src/js/bootstrap-treeview.js');
+  app.import(app.bowerDirectory + '/bootstrap-treeview/dist/bootstrap-treeview.min.css');
+
   /*
   app.import(app.bowerDirectory + '/bootstrap/fonts/glyphicons-halflings-regular.eot', {
     destDir: 'fonts'
