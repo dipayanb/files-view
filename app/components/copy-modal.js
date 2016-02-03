@@ -11,7 +11,7 @@ export default Ember.Component.extend(OperationModal, {
    didCloseModal: function() {
      console.log("Copy Modal did close.");
    },
-   move: function(){
+   copy: function(){
       if(this.get('selectedFolderPath') !== ''){
         alert('Dirrectory:: ' + this.get('selectedFolderPath'));
       }

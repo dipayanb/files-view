@@ -3,14 +3,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Move file(s) to ...</h3>
+                    <h3 class="modal-title">Move to ...</h3>
                 </div>
                 <div class="modal-body">
                     {{directory-viewer }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default">Cancel</button>
-                    <button type="button" class="btn btn-primary" {{action 'copy' }} >Move</button>
+                    <button type="button" class="btn btn-default {{if isUpdating "disabled"}}" {{action 'close'}}>{{fa-icon icon="close"}} Cancel</button>
+                    <button type="submit" class="btn btn-primary {{if isUpdating "disabled"}}" {{action 'move'}}>{{fa-icon icon="share"}} Move</button>
                 </div>
             </div>
         </div>

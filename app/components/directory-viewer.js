@@ -41,41 +41,42 @@ export default Ember.Component.extend({
                       }
                  }
              }
-             (function(){
-                $('#tree').treeview( {
-                  data: result,
-                  levels: 1,
-                  showIcon: false,
-                  showBorder: false,
-                  expandIcon: "fa fa-plus",
-                  collapseIcon: "fa fa-minus",
-                  emptyIcon: "fa fa-plus",
-                  onNodeSelected: function(event, data) {
 
-                     //We have to track the scrollTop of the container because resets it to 0 after rendering of json tree.
-                     var $treeElmnt = $(event.target);
-                     var $treeElmntScrollHeight = $treeElmnt.scrollTop();
+              $('#tree').treeview( {
+                data: result,
+                levels: 1,
+                showIcon: false,
+                showBorder: false,
+                expandIcon: "fa fa-plus",
+                collapseIcon: "fa fa-minus",
+                emptyIcon: "fa fa-plus",
+                onNodeSelected: function(event, data) {
 
-                     var dirUrl = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/fileops/listdir?path=' + data.completepath;
+                   //We have to track the scrollTop of the container because resets it to 0 after rendering of json tree.
+                   var $treeElmnt = $(event.target);
+                   var $treeElmntScrollHeight = $treeElmnt.scrollTop();
 
-                     init(dirUrl, data.parent);
+                   var dirUrl = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/fileops/listdir?path=' + data.completepath;
 
-                     /* TODO :: Use Ember promise for this and exceute the below fun only for successful callback.  */
-                     setTimeout(function(){
+                   init(dirUrl, data.parent);
+
+                   /* TODO :: Use Ember promise for this and exceute the below fun only for successful callback.  */
+                   setTimeout(function(){
                       $('#tree').treeview('expandNode', [ data.nodeId, { silent: true } ]);
-                        _self.send('expandParent', data.nodeId);
 
-                        $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
-                        $treeElmnt.scrollTop($treeElmntScrollHeight);
+                      _self.send('expandParent', data.nodeId);
 
-                        _self.set('selectedFolderPath', data.completepath );
-                        _self.send('setSelectedFolder', _self.get('selectedFolderPath')); // send the path as param
+                      $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
+                      $treeElmnt.scrollTop($treeElmntScrollHeight);
 
-                     },250);
+                      _self.set('selectedFolderPath', data.completepath );
+                      _self.send('setSelectedFolder', _self.get('selectedFolderPath')); // send the path as param
 
-                  }}
-               )
-             })();
+                   },250);
+
+                }}
+             )
+
 
          },
          error: function() {
@@ -90,7 +91,7 @@ export default Ember.Component.extend({
   },
   actions: {
     setSelectedFolder: function(path) {
-      this.parentView.set('selectedFolderPath', path);
+      this.parentView.set('selectionName', path);
     },
     expandParent: function(nodeId){
         if(nodeId){
