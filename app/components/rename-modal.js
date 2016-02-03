@@ -28,9 +28,6 @@ export default Ember.Component.extend(OperationModal, {
       }, 500);
 
     },
-    didCloseModal: function() {
-      console.log("Rename Modal did close.");
-    },
 
     rename: function() {
       if(Ember.isBlank(this.get('selectionName'))) {

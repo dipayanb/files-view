@@ -6,6 +6,7 @@ import Ember from 'ember';
   `alert` objects in store pass `options.flashOnly` as `true`. The options
   required for creating the `alert` objects are:
   ```
+    options.message: message field returned by the API server.
     options.status : Status XHR request if the message is a response to XHR request. Defaults to -1.
     options.error: Detailed error to be displayed.
   ```
@@ -47,6 +48,7 @@ export default Ember.Service.extend({
   _createAlert: function(message, type, options) {
     var data = {};
     data.message = message;
+    data.responseMessage = options.message || '';
     data.id = this._getNextAlertId();
     data.type = type;
     data.status = options.status || -1;

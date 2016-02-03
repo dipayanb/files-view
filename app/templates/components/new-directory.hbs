@@ -1,29 +1,29 @@
-<button type="button" class="btn btn-primary" id="myBtn" {{action "openModal"}} >{{fa-icon icon="plus"}} New Directory</button>
+<button type="button" class="btn btn-primary" id="myBtn" {{action "openModal"}} >{{fa-icon icon="plus"}} New Folder</button>
 
-<!-- Modal Dialog -->
-<div class="modal fade" id="createDirectoryModal" role="dialog">
+{{#if modalGuard}}
+  <!-- Modal Dialog -->
+  <div class="modal fade" id="createDirectoryModal" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Create New Directory</h4>
-            </div>
-            <div class="modal-body">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="directoryname">Directory Name</label>
-                        <input type="text" class="form-control" id="directoryname" placeholder="Enter Directory Name">
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-default btn-success" {{action "createDirectory"}} >Upload</button>
-                <button type="button" class="btn btn-default pull-right" {{action "closeModal"}} >Cancel</button>
-            </div>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{fa-icon "folder-o"}} Add new folder</h4>
         </div>
-     </div>
-</div>
+        <form role="form">
+          <div class="modal-body">
+            <div class="form-group {{if hasError "has-error"}}">
+              <label>Name</label>
+              {{input type="text" class="form-control" placeholder="Enter folder name..." value=folderName}}
+              {{#if hasError}}<span class="help-block">{{errorMessage}}</span>{{/if}}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" {{action "close"}}>{{fa-icon "close"}} Cancel</button>
+            <button type="submit" class="btn btn-default btn-primary" {{action "create"}} >{{fa-icon "plus"}} Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 <!-- Modal Dialog Ends -->
-
-{{yield}}
+{{/if}}

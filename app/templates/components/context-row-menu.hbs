@@ -16,7 +16,7 @@
       <li><a href="#" {{action "copy"}}>{{fa-icon "file-o" size="lg"}} Copy </a></li>
       <li><a href="#" {{action "move"}}>{{fa-icon "share" size="lg"}} Move </a></li>
       <li><a href="#" {{action "download"}}>{{fa-icon "download" size="lg"}} Download </a></li>
-      <li class={{if isSingleSelected "disabled"}}><a href="#" {{action "concatenate"}}>{{fa-icon "file-text" size="lg"}} concatenate </a></li>
+      <li class={{unless isOnlyMultiFilesSelected "disabled"}}><a href="#" {{action "concatenate"}}>{{fa-icon "file-text" size="lg"}} concatenate </a></li>
     </ul>
 
     {{copy-modal closeModalAction="modalClosed" name="ctx-copy"}}
@@ -24,6 +24,7 @@
     {{open-preview-modal closeModalAction="modalClosed" name="ctx-open"}}
     {{rename-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-rename"}}
     {{delete-modal closeModalAction="modalClosed" name="ctx-delete"}}
+    {{permission-modal closeModalAction="modalClosed" name="ctx-permission"}}
   </div>
 {{else}}
   <div class="context-text small">

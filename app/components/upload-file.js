@@ -1,21 +1,18 @@
 import Ember from 'ember';
+import OperationModal from '../mixins/operation-modal';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(OperationModal, {
+  modalEventBus: Ember.inject.service('modal-event-bus'),
   tagName: "span",
-  enabledModal: false, // was never used
+  closeOnEscape: true,
+  name: 'ctx-uploader',
+  path: '',
+  didInitAttrs: function() {
+    this.get('modalEventBus').registerModal("ctx-uploader");
+  },
   actions: {
-    uploadFile: function() {
-      alert('file uploaded.')
-    },
-    closeModal : function() {
-      /* TODO :: Remove below two lines, these lines are HACK code for modal closing not behaving as expected. */
-      $("#uploadFileModal").css('display','none');
-      $(".modal-backdrop").remove();
-
-      $("#uploadFileModal").modal('hide');
-    },
     openModal : function() {
-      $("#uploadFileModal").modal('show');
+      this.get('modalEventBus').showModal('ctx-uploader');
     },
     /* TODO :: change the fileLoaded for actual implementation.  */
     fileLoaded: function(file) {

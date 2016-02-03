@@ -1,35 +1,30 @@
 <button type="button" class="btn btn-primary" {{action "openModal"}}  >{{fa-icon icon="upload"}} Upload</button>
 
-<!-- Modal Dialog -->
-<div class="modal fade" id="uploadFileModal" role="dialog">
+{{#if modalGuard}}
+  <!-- Modal Dialog -->
+  <div class="modal fade" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Upload to Files View</h4>
-            </div>
-            <div class="modal-body">
-
-                {{!--
-                Try more options using below plugin link.
-                https://www.npmjs.com/package/ember-cli-file-picker
-                --}}
-
-                {{#file-picker fileLoaded="fileLoaded"}}
-                    <button type="button" class="btn btn-default">Choose File</button>
-                {{/file-picker}}
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-default btn-success" {{action "uploadFile"}} >Upload</button>
-                <button type="button" class="btn btn-default pull-right" {{action "closeModal"}} >Cancel</button>
-            </div>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>{{fa-icon "upload"}} Upload file to {{path}}</h4>
         </div>
+        <div class="modal-body">
+
+          {{!--
+          Try more options using below plugin link.
+          https://www.npmjs.com/package/ember-cli-file-picker
+          --}}
+
+          {{#file-picker fileLoaded="fileLoaded" preview=false}}
+            <div class="text-center vert-align-middle">
+              {{fa-icon "cloud-upload" size="4"}}
+              <h4> Drag file to upload or click to browse</h4>
+            </div>
+          {{/file-picker}}
+        </div>
+      </div>
     </div>
-</div>
-<!-- Modal Dialog Ends -->
-
-{{yield}}
-
-{{yield}}
+  </div>
+  <!-- Modal Dialog Ends -->
+{{/if}}

@@ -8,9 +8,13 @@ export default ApplicationAdapter.extend({
   },
   parseErrorResponse: function(responseText) {
     var json = this._super(responseText);
-    json.errors = [{success: json.success, message: json.message}];
-    delete json.success;
-    delete json.message;
-    return json;
+    if((typeof json) === 'object') {
+      json.errors = [{success: json.success, message: json.message}];
+      delete json.success;
+      delete json.message;
+      return json;
+    } else {
+      return {success: "", message: ""};
+    }
   }
 });

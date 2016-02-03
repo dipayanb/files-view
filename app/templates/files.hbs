@@ -5,8 +5,8 @@
   <!-- Include directory name and rename button -->
   <div class="col-md-offset-2 col-md-5">
     <p class="pull-right">
-      {{ new-directory }}
-      {{ upload-file }}
+      {{new-directory path=path refreshAction="refreshCurrentRoute"}}
+      {{upload-file path=path}}
     </p>
   </div>
 </div>
@@ -41,6 +41,7 @@
     {{#files-collection items=arrangedContent
       columnsConfig=columns
       sortEnabled=sortEnabled
+      parentPath=parentPath
       sortAction="sortFiles"
       resetSelection="deselectAll"
       selectAllAction="selectAll"

@@ -7,6 +7,10 @@ export default Ember.Component.extend(EKMixin, {
   currentHeight: 600,
   columnsConfig: [],
   sortOptions: [-1, 0, 1],
+  parentPath: '',
+  isEmptyParentPath: Ember.computed('parentPath', function() {
+    return Ember.isBlank(this.get('parentPath'));
+  }),
 
   resizeView: Ember.on('init', function() {
     $(window).resize(this.windowResized(this));
@@ -35,7 +39,7 @@ export default Ember.Component.extend(EKMixin, {
       Ember.run.later(function() {
         var currentWidth = $("#" + scope.get('containerId')).width();
         var windowHeight = $(window).height();
-        var relativeHeight = windowHeight - 180;
+        var relativeHeight = windowHeight - 220;
         if(relativeHeight < scope.get('minHeight')) {
           relativeHeight = scope.get('minHeight');
         }

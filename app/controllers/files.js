@@ -24,6 +24,19 @@ export default Ember.Controller.extend({
     return this.get('fileSelectionService.files.length') !== 0 && this.get('fileSelectionService.files.length') === this.get('model.length');
   }),
 
+  parentPath: Ember.computed('path', function() {
+    var path = this.get('path');
+    var parentPath = path.substring(0, path.lastIndexOf('/'));
+    if(Ember.isBlank(parentPath)) {
+      parentPath = '/';
+    }
+
+    if(path === '/') {
+      parentPath = '';
+    }
+    return parentPath;
+  }),
+
   sortedContent: Ember.computed.sort('model', 'sortProperty'),
 
   resetSelection: Ember.observer('path', function() {

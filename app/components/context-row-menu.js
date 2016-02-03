@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   fileSelectionService: Ember.inject.service('files-selection'),
   modalEventBus: Ember.inject.service('modal-event-bus'),
   alertMessages: Ember.inject.service('alert-messages'),
+  filesDownloadService: Ember.inject.service('files-download'),
 
   classNames: ['row', 'context-menu-row'],
   selectedFilesCount: Ember.computed.oneWay('fileSelectionService.filesCount'),
@@ -17,6 +18,9 @@ export default Ember.Component.extend({
   isSelected: Ember.computed('selectedFilesCount', 'selectedFolderCount', function() {
     return (this.get('selectedFilesCount') + this.get('selectedFolderCount')) !== 0;
   }),
+  isOnlyMultiFilesSelected: Ember.computed('selectedFilesCount', 'selectedFolderCount', function() {
+    return this.get('selectedFolderCount') === 0 && this.get('selectedFilesCount') > 1;
+  }),
   lastSelectedFile: Ember.computed.oneWay('fileSelectionService.lastFileSelected'),
 
   didInitAttrs: function() {
@@ -29,7 +33,6 @@ export default Ember.Component.extend({
     this.get('modalEventBus').registerModal('ctx-move');
     this.get('modalEventBus').registerModal('ctx-download');
     this.get('modalEventBus').registerModal('ctx-concatenate');
-    window.abcd = this.get('alertMessages');
   },
 
   actions: {
@@ -72,15 +75,14 @@ export default Ember.Component.extend({
       if (!this.get('isSelected')) {
         return false;
       }
-      console.log("download called!!!");
-
+      this.get('filesDownloadService').download();
     },
 
     concatenate: function(event) {
-      if (!this.get('isMultiSelected')) {
+      if (!this.get('isOnlyMultiFilesSelected')) {
         return false;
       }
-      console.log("Concatenate called!!!");
+      this.get('filesDownloadService').concatenate();
     },
 
     rename: function(event) {
@@ -88,6 +90,12 @@ export default Ember.Component.extend({
         return false;
       }
       this.get('modalEventBus').showModal('ctx-rename');
+    },
+    permission: function(event) {
+      if (!this.get('isSingleSelected')) {
+        return false;
+      }
+      this.get('modalEventBus').showModal('ctx-permission');
     },
 
     modalClosed: function(modalName) {

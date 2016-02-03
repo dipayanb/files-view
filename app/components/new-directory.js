@@ -1,21 +1,54 @@
 import Ember from 'ember';
+import OperationModal from '../mixins/operation-modal';
 
-export default Ember.Component.extend({
-  tagName: "span",
-  enabledModal: false, // was never used
+export default Ember.Component.extend(OperationModal, {
+  modalEventBus: Ember.inject.service('modal-event-bus'),
+  fileOperationService: Ember.inject.service('file-operation'),
+  closeOnEscape: true,
+  tagName: 'span',
+  name: 'ctx-new-directory',
+  hasError: false,
+  errorMessage: '',
+  folderName: '',
+  didInitAttrs: function() {
+    this.get('modalEventBus').registerModal("ctx-new-directory");
+  },
+  resetError: Ember.observer('folderName', function() {
+    this.set('hasError', false);
+    this.set('errorMessage', '');
+  }),
+  setError: function(message) {
+    this.set('hasError', true);
+    this.set('errorMessage', message);
+  },
   actions: {
-    createDirectory: function() {
-      alert('directory created')
+    didOpenModal: function() {
+      this.set('folderName');
+      Ember.run.later(() => {
+        this.$('input').focus();
+      }, 500);
     },
-    closeModal : function() {
-      /* TODO :: Remove below two lines, these lines are HACK code for modal closing not behaving as expected. */
-      $("#createDirectoryModal").css('display','none');
-      $(".modal-backdrop").remove();
+    create: function() {
+      if(Ember.isBlank(this.get('folderName'))) {
+        this.setError('Cannot be empty');
+        return false;
+      }
 
-      $("#createDirectoryModal").modal('hide');
+      if(this.get('fileOperationService').isExistsInCurrentPath(this.get('folderName'))) {
+        this.setError('Name already exists');
+        return false;
+      }
+
+      this.get('fileOperationService').createNewFolder(this.get('path'), this.get('folderName')).then(
+        (response) => {
+          this.send('close');
+          this.sendAction('refreshAction');
+        }, (error) => {
+          this.send('close');
+        });
     },
     openModal : function() {
-      $("#createDirectoryModal").modal('show');
+      this.get('modalEventBus').showModal('ctx-new-directory');
     }
   }
 });
