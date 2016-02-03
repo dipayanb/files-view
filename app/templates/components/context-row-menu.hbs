@@ -19,6 +19,7 @@
       <li class={{if isSingleSelected "disabled"}}><a href="#" {{action "concatenate"}}>{{fa-icon "file-text" size="lg"}} concatenate </a></li>
     </ul>
 
+    {{copy-modal closeModalAction="modalClosed" name="ctx-copy"}}
     {{move-modal closeModalAction="modalClosed" name="ctx-move"}}
     {{open-preview-modal closeModalAction="modalClosed" name="ctx-open"}}
     {{rename-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-rename"}}

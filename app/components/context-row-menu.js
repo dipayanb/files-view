@@ -56,7 +56,8 @@ export default Ember.Component.extend({
       if (!this.get('isSelected')) {
         return false;
       }
-      console.log("Copy called!!!");
+      //console.log("Copy called!!!");
+      this.get('modalEventBus').showModal('ctx-copy');
     },
 
     move: function(event) {

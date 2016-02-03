@@ -6,21 +6,15 @@ export default Ember.Component.extend(OperationModal, {
  selectedFolderPath: '',
  actions: {
    didOpenModal: function() {
-     console.log("Move modal opened");
+     console.log("Copy modal opened");
    },
    didCloseModal: function() {
-     console.log("Move Modal did close.");
+     console.log("Copy Modal did close.");
    },
-   setPathModal: function(){
-      alert('hi');
-      //this.set('selectedPath',path);
-   },
-   copy: function(){
+   move: function(){
       if(this.get('selectedFolderPath') !== ''){
         alert('Dirrectory:: ' + this.get('selectedFolderPath'));
       }
    }
  }
-
-
 });
