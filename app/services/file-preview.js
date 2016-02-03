@@ -2,9 +2,15 @@ import Ember from 'ember';
 import FileOperationMixin from '../mixins/file-operation';
 
 export default Ember.Service.extend(FileOperationMixin, {
+  fileSelectionService: Ember.inject.service('files-selection'),
+  selectedFiles: Ember.computed.alias('fileSelectionService.files'),
+  selected: Ember.computed('selectedFiles', function() {
+    return this.get('selectedFiles').objectAt(0);
+  }),
+
   fileContent: '',
   startIndex: 0,
-  offset: 3000,
+  offset: 5000,
   path: '',
   isLoading: false,
   fileFetchFinished: false,
@@ -39,8 +45,15 @@ export default Ember.Service.extend(FileOperationMixin, {
     console.log('startIndex:: ' +  this.get('startIndex'));
     console.log('endIndex:: ' +  this.get('endIndex'));
 
-    //var currentFetchPath = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/preview/file?path=/user/hue/airline/airline/2009.csv.bz2&start=' + this.get('startIndex') + '&end='+ this.get('endIndex');
-    var currentFetchPath = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/preview/file?path=/apps/hive/warehouse/nyse_stocks/NYSE-2000-2001.tsv.gz&start=' + this.get('startIndex') + '&end='+ this.get('endIndex');
+
+    var adapter = this.get('store').adapterFor('file');
+    var baseURL = adapter.buildURL('file');
+    var renameUrl = baseURL.substring(0, baseURL.lastIndexOf('/'));
+    var previewUrl = renameUrl.substring(0, renameUrl.lastIndexOf('/')) + "/preview/file?path=";
+
+    console.log(previewUrl);
+
+    var currentFetchPath = previewUrl + this.get('selected.path') +'&start=' + this.get('startIndex') + '&end='+ this.get('endIndex');
 
     /* TODO:: remove above hardcoded file url and use getBaseFilesURLPath and dynamic path for particular file. Use below two lines.  */
     //var basePath = getBaseFilesURLPath();

@@ -19,13 +19,13 @@ export default Ember.Component.extend(OperationModal, {
       var _self = this;
       this.$('.preview-content').on('scroll', function() {
         if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
-          console.log('I am called.' + this.scrollHeight );
           _self.get('filePreviewService').getNextContent();
         }
       });
     },
     didCloseModal: function() {
       this.$('.preview-content').off('scroll');
+      this.get('filePreviewService').reset();
     }
   }
 

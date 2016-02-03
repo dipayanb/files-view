@@ -47,9 +47,9 @@ export default Ember.Component.extend({
                 levels: 1,
                 showIcon: false,
                 showBorder: false,
-                expandIcon: "fa fa-plus",
-                collapseIcon: "fa fa-minus",
-                emptyIcon: "fa fa-plus",
+                expandIcon: "fa fa-folder",
+                collapseIcon: "fa fa-folder",
+                emptyIcon: "fa fa-folder",
                 onNodeSelected: function(event, data) {
 
                    //We have to track the scrollTop of the container because resets it to 0 after rendering of json tree.
@@ -62,11 +62,11 @@ export default Ember.Component.extend({
 
                    /* TODO :: Use Ember promise for this and exceute the below fun only for successful callback.  */
                    setTimeout(function(){
-                      $('#tree').treeview('expandNode', [ data.nodeId, { silent: true } ]);
-
-                      _self.send('expandParent', data.nodeId);
 
                       $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
+                      $('#tree').treeview('revealNode', [ data.nodeId, { silent: true } ]);
+                      $('#tree').treeview('expandNode', [ data.nodeId, { silent: true } ]);
+
                       $treeElmnt.scrollTop($treeElmntScrollHeight);
 
                       _self.set('selectedFolderPath', data.completepath );
@@ -76,8 +76,6 @@ export default Ember.Component.extend({
 
                 }}
              )
-
-
          },
          error: function() {
              console.log('Error in retrieving the directorties.');
@@ -101,6 +99,10 @@ export default Ember.Component.extend({
               this.send('expandParent', itsParent.nodeId);
           }
         }
+    },
+    revealNode: function(nodeId){
+        $('#tree').treeview('revealNode', [ nodeId, { silent: true } ]);
     }
+
   }
 });
