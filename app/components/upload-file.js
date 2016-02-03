@@ -1,26 +1,66 @@
 import Ember from 'ember';
 import OperationModal from '../mixins/operation-modal';
+import FileUploader from '../utils/file-uploader';
 
 export default Ember.Component.extend(OperationModal, {
   modalEventBus: Ember.inject.service('modal-event-bus'),
+  fileOperationService: Ember.inject.service('file-operation'),
   tagName: "span",
   closeOnEscape: true,
   name: 'ctx-uploader',
   path: '',
+  isUploading: false,
+  uploadFileName: '',
+  uploadPercent: '0%',
+  uploadPercentStyle: Ember.computed('uploadPercent', function() {
+    var style = 'width: ' + this.get('uploadPercent') + ';';
+    return style.htmlSafe();
+  }),
   didInitAttrs: function() {
     this.get('modalEventBus').registerModal("ctx-uploader");
   },
+  setUploadPercent: function(percent) {
+    var intValue = Math.round(percent);
+    this.set('uploadPercent', `${intValue}%`);
+  },
+
+  setUploading: function(fileName) {
+    this.set('uploadFileName', fileName);
+    this.set('isUploading', true);
+    this.set('closeOnEscape', false);
+  },
+
   actions: {
     openModal : function() {
       this.get('modalEventBus').showModal('ctx-uploader');
     },
-    /* TODO :: change the fileLoaded for actual implementation.  */
+    didOpenModal: function() {
+      this.set('isUploading', false);
+      this.set('uploadFileName', '');
+      this.set('closeOnEscape', true);
+    },
+
     fileLoaded: function(file) {
-    			// readAs="readAsFile"
-    			console.log(file.name, file.type, file.size);
-    			// readAs="readAsArrayBuffer|readAsBinaryString|readAsDataURL|readAsText"
-    			console.log(file.filename, file.type, file.data, file.size);
-    			alert('Here are the file details ::  ' +  ' file.name: ' + file.name + ' file.type: '+ file.type + ' file.size: ' +  file.size);
+      var url = this.get('fileOperationService').getUploadUrl();
+      var uploader = FileUploader.create({
+        url: url
+      });
+      if(!Ember.isEmpty(file)) {
+        uploader.upload(file, {path: this.get('path')});
+        this.setUploading(file.name);
+        uploader.on('progress', (e) => {
+          this.setUploadPercent(e.percent);
+        });
+        uploader.on('didUpload', (e) => {
+          this.send('close');
+          this.sendAction('refreshAction');
+        });
+        uploader.on('didError', (jqXHR, textStatus, errorThrown) => {
+          this.send('close');
+          //TODO: log error!!!!
+        });
+      }
+
     }
 
   }

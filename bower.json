@@ -12,7 +12,8 @@
     "bootstrap": "~3.3.6",
     "bootstrap-treeview": "~1.2.0",
     "moment": "~2.11.1",
-    "font-awesome": "~4.5.0"
+    "font-awesome": "~4.5.0",
+    "ember-uploader": "~0.3.11"
   },
   "resolutions": {
     "ember": "2.2.0"

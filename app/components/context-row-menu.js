@@ -59,7 +59,6 @@ export default Ember.Component.extend({
       if (!this.get('isSelected')) {
         return false;
       }
-      //console.log("Copy called!!!");
       this.get('modalEventBus').showModal('ctx-copy');
     },
 
@@ -68,7 +67,6 @@ export default Ember.Component.extend({
         return false;
       }
       this.get('modalEventBus').showModal('ctx-move');
-
     },
 
     download: function(event) {

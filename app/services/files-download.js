@@ -101,12 +101,6 @@ export default Ember.Service.extend(FileOperationMixin, {
     });
   },
 
-  _getBaseURLFragments: function() {
-    var adapter = this.get('store').adapterFor('file');
-    var baseURL = adapter.buildURL('file');
-    return baseURL.split('/');
-  },
-
   _getDownloadGenLinkUrl: function() {
     var urlFragments = this._getBaseURLFragments();
     return urlFragments.slice(0, urlFragments.length - 2).join('/') + "/download/zip/generate-link";

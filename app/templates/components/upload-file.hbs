@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" {{action "openModal"}}  >{{fa-icon icon="upload"}} Upload</button>
+<button type="button" class="btn btn-sm btn-primary" {{action "openModal"}}  >{{fa-icon icon="upload"}} Upload</button>
 
 {{#if modalGuard}}
   <!-- Modal Dialog -->
@@ -10,18 +10,21 @@
           <h4>{{fa-icon "upload"}} Upload file to {{path}}</h4>
         </div>
         <div class="modal-body">
-
-          {{!--
-          Try more options using below plugin link.
-          https://www.npmjs.com/package/ember-cli-file-picker
-          --}}
-
-          {{#file-picker fileLoaded="fileLoaded" preview=false}}
-            <div class="text-center vert-align-middle">
-              {{fa-icon "cloud-upload" size="4"}}
-              <h4> Drag file to upload or click to browse</h4>
+          {{#unless isUploading}}
+            {{#file-picker fileLoaded="fileLoaded" preview=false}}
+              <div class="text-center vert-align-middle">
+                {{fa-icon "cloud-upload" size="4"}}
+                <h4> Drag file to upload or click to browse</h4>
+              </div>
+            {{/file-picker}}
+          {{else}}
+            <div class="progress file-picker-progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style={{uploadPercentStyle}}>
+                {{uploadPercent}}
+              </div>
             </div>
-          {{/file-picker}}
+            <em>{{uploadFileName}}</em>
+          {{/unless}}
         </div>
       </div>
     </div>

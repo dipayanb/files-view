@@ -34,6 +34,11 @@ export default Ember.Service.extend(FileOperationMixin, {
     });
   },
 
+  getUploadUrl: function() {
+    var urlFragments = this._getBaseURLFragments();
+    return urlFragments.slice(0, urlFragments.length - 2).join('/') + "/upload";
+  },
+
   _getFileOperationUrl: function(pathFragment) {
     var adapter = this.get('store').adapterFor('file');
     var baseURL = adapter.buildURL('file');

@@ -16,5 +16,11 @@ export default Ember.Mixin.create({
 
   getBaseDirPath: function(path) {
     return path.substring(0, path.lastIndexOf('/') + 1);
+  },
+
+  _getBaseURLFragments: function() {
+    var adapter = this.get('store').adapterFor('file');
+    var baseURL = adapter.buildURL('file');
+    return baseURL.split('/');
   }
 });

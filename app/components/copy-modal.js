@@ -2,7 +2,7 @@ import Ember from 'ember';
 import OperationModal from '../mixins/operation-modal';
 
 export default Ember.Component.extend(OperationModal, {
- consoleOnEscape: false,
+ closeOnEscape: true,
  selectedFolderPath: '',
  actions: {
    didOpenModal: function() {
