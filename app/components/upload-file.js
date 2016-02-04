@@ -19,6 +19,9 @@ export default Ember.Component.extend(OperationModal, {
   didInitAttrs: function() {
     this.get('modalEventBus').registerModal("ctx-uploader");
   },
+  willDestroyElement() {
+    this.get('modalEventBus').resetModal("ctx-uploader");
+  },
   setUploadPercent: function(percent) {
     var intValue = Math.round(percent);
     this.set('uploadPercent', `${intValue}%`);

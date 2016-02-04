@@ -25,6 +25,6 @@ export default Ember.Service.extend({
       Ember.assert("Modal: Can only use 'String' control property name for reset modal.", false);
       return false;
     }
-    this.set(modalControlProperty, false);
+    this.set(modalControlProperty);
   }
 });

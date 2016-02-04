@@ -35,6 +35,17 @@ export default Ember.Component.extend({
     this.get('modalEventBus').registerModal('ctx-concatenate');
   },
 
+  willDestroyElement() {
+    this.get('modalEventBus').resetModal('ctx-open');
+    this.get('modalEventBus').resetModal('ctx-rename');
+    this.get('modalEventBus').resetModal('ctx-permission');
+    this.get('modalEventBus').resetModal('ctx-delete');
+    this.get('modalEventBus').resetModal('ctx-copy');
+    this.get('modalEventBus').resetModal('ctx-move');
+    this.get('modalEventBus').resetModal('ctx-download');
+    this.get('modalEventBus').resetModal('ctx-concatenate');
+  },
+
   actions: {
     open: function(event) {
       if (this.get('isSingleSelected')) {

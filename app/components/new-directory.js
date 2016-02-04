@@ -13,6 +13,9 @@ export default Ember.Component.extend(OperationModal, {
   didInitAttrs: function() {
     this.get('modalEventBus').registerModal("ctx-new-directory");
   },
+  willDestroyElement() {
+    this.get('modalEventBus').resetModal("ctx-new-directory");
+  },
   resetError: Ember.observer('folderName', function() {
     this.set('hasError', false);
     this.set('errorMessage', '');
