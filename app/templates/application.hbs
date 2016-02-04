@@ -8,6 +8,13 @@
       {{/each}}
     </div>
   </div>
+  {{#if isLoading}}
+    <div class="row">
+      <div class="col-md-2 col-md-offset-5 loading-message text-center">
+        {{fa-icon icon="spinner" spin=true}} Loading
+      </div>
+    </div>
+  {{/if}}
   {{outlet}}
 </div>
 
