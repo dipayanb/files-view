@@ -63,10 +63,10 @@ export default Ember.Component.extend({
                    /* TODO :: Use Ember promise for this and exceute the below fun only for successful callback.  */
                    setTimeout(function(){
 
-                      $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
-                      $('#tree').treeview('revealNode', [ data.nodeId, { silent: true } ]);
                       $('#tree').treeview('expandNode', [ data.nodeId, { silent: true } ]);
-
+                      $('#tree').treeview('revealNode', [ data.nodeId, { silent: true } ]);
+                      $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
+                      
                       $treeElmnt.scrollTop($treeElmntScrollHeight);
 
                       _self.set('selectedFolderPath', data.completepath );

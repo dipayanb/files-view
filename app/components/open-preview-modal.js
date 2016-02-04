@@ -26,6 +26,9 @@ export default Ember.Component.extend(OperationModal, {
     didCloseModal: function() {
       this.$('.preview-content').off('scroll');
       this.get('filePreviewService').reset();
+    },
+    download : function() {
+      this.get('filePreviewService').download();
     }
   }
 

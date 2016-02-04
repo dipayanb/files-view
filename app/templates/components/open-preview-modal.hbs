@@ -7,8 +7,8 @@
         </div>
         <pre class="modal-body preview-content" style="white-space:pre;margin: 10px; padding: 10px;overflow-y: auto; height: 350px">{{ filePreviewService.fileContent }}</pre>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default">Close</button>
-          <button type="button" class="btn btn-primary">Download</button>
+          <button type="button" class="btn btn-default" {{action 'close'}}>{{fa-icon icon="close"}} Cancel</button>
+          <button type="submit" class="btn btn-primary" {{action 'download'}}>{{fa-icon icon="download"}} Download</button>
         </div>
       </div>
     </div>

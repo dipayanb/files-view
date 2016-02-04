@@ -7,7 +7,7 @@ export default Ember.Service.extend(FileOperationMixin, {
   selected: Ember.computed('selectedFiles', function() {
     return this.get('selectedFiles').objectAt(0);
   }),
-
+  filesDownloadService: Ember.inject.service('files-download'),
   fileContent: '',
   startIndex: 0,
   offset: 5000,
@@ -23,7 +23,7 @@ export default Ember.Service.extend(FileOperationMixin, {
   reset: function() {
     this.set('fileContent', '');
     this.set('startIndex', 0);
-    this.set('offset', 3000);
+    this.set('offset', 5000);
     this.set('path', '');
     this.set('isLoading', false);
     this.set('hasError', false);
@@ -42,23 +42,12 @@ export default Ember.Service.extend(FileOperationMixin, {
       return false;
     }
 
-    console.log('startIndex:: ' +  this.get('startIndex'));
-    console.log('endIndex:: ' +  this.get('endIndex'));
-
-
     var adapter = this.get('store').adapterFor('file');
     var baseURL = adapter.buildURL('file');
     var renameUrl = baseURL.substring(0, baseURL.lastIndexOf('/'));
     var previewUrl = renameUrl.substring(0, renameUrl.lastIndexOf('/')) + "/preview/file?path=";
 
-    console.log(previewUrl);
-
     var currentFetchPath = previewUrl + this.get('selected.path') +'&start=' + this.get('startIndex') + '&end='+ this.get('endIndex');
-
-    /* TODO:: remove above hardcoded file url and use getBaseFilesURLPath and dynamic path for particular file. Use below two lines.  */
-    //var basePath = getBaseFilesURLPath();
-    //var currentFetchPath = `${basePath}/preview/file?path=${this.get(path)}&start=${this.get('startIndex')}&end=${this.get('endIndex')}`;
-
 
     this.set('isLoading', true);
 
@@ -101,5 +90,8 @@ export default Ember.Service.extend(FileOperationMixin, {
     this.set('isLoading', false);
   },
 
+  download: function(event) {
+    this.get('filesDownloadService').download();
+  }
 
 });
