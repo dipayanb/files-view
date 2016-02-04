@@ -9,12 +9,9 @@
                     {{directory-viewer }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default">Cancel</button>
-
-                    <!-- Change the below action. -->
-
-                    <button type="button" class="btn btn-primary" {{action 'copy' }} >Copy</button>
-                </div>
+                    <button type="button" class="btn btn-default {{if isUpdating "disabled"}}" {{action 'close'}}>{{fa-icon icon="close"}} Cancel</button>
+                    <button type="submit" class="btn btn-primary {{if isUpdating "disabled"}}" {{action 'copy'}}>{{fa-icon icon="file-o"}} Move</button>
+               </div>
             </div>
         </div>
     </div>

@@ -6,7 +6,8 @@ export default Ember.Service.extend(FileOperationMixin, {
 
   // Returns a promise for the operation. Upon sucess or error, this also
   // appropriately sends error messages.
-  move: function(srcPath, destName, isDirectory) {
+
+  copy: function(srcPath, destName, isDirectory) {
     return new Ember.RSVP.Promise((resolve, reject) => {
 
       var fileName;
@@ -29,15 +30,15 @@ export default Ember.Service.extend(FileOperationMixin, {
 
       var adapter = this.get('store').adapterFor('file');
       var baseURL = adapter.buildURL('file');
-      var moveUrl = baseURL.substring(0, baseURL.lastIndexOf('/')) + "/rename";
+      var moveUrl = baseURL.substring(0, baseURL.lastIndexOf('/')) + "/copy";
       var data = {src: srcPath, dst: destPath};
       adapter.ajax(moveUrl, "POST", {data: data}).then((response) => {
-        this.get('alertMessages').success(`Successfully moved to ${destPath}.`);
+        this.get('alertMessages').success(`Successfully copied to ${destPath}.`);
         resolve(response);
       }, (error) => {
         var errorJson = error.errors[0];
         errorJson.retry = false;
-        this.get('alertMessages').danger(`Failed to move to ${destPath}`);
+        this.get('alertMessages').danger(`Failed to copy to ${destPath}`);
         reject(errorJson);
       });
     });
