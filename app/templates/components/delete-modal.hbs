@@ -3,14 +3,40 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title">Delete</h3>
+          <h4 class="modal-title">{{fa-icon icon="trash"}} Delete</h4>
         </div>
         <div class="modal-body">
-          This is where the content will be deleted
+          {{#unless isDeleting}}
+            {{#unless hasError}}
+              <p class="lead">Are you sure you want to delete{{#if hasFiles}} {{filesCount}} file(s){{#if hasFolders}} and {{/if}}{{/if}}{{#if hasFolders}} {{folderCount}} folder(s) {{/if}}?</p>
+              <div class="checkbox">
+                <label>
+                  {{input type="checkbox" checked=deletePermanently}} <strong>Delete permanently</strong>
+                </label>
+              </div>
+            {{else}}
+              <p class="text-danger">{{currentFailureMessage}}</p>
+            {{/unless}}
+          {{else}}
+            <div class="text-center">
+              {{fa-icon "spinner" spin=true size="2"}}
+            </div>
+          {{/unless}}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default">Cancel</button>
-          <button type="button" class="btn btn-primary">Delete</button>
+          {{#unless hasError}}
+            <button type="button" class="btn btn-default" disabled={{isDeleting}} {{action "close"}}>{{fa-icon "remove"}} Cancel</button>
+            <button type="button" class="btn btn-danger" disabled={{isDeleting}} {{action "delete"}}>{{fa-icon "trash"}} Delete</button>
+          {{else}}
+            {{#unless shouldRetry}}
+              <button type="button" class="btn btn-default" disabled={{isDeleting}} {{action "close"}}>{{fa-icon "remove"}} Cancel</button>
+            {{/unless}}
+            <button type="button" class="btn btn-danger" disabled={{isDeleting}} {{action "retryError"}}>{{fa-icon "refresh"}} Retry</button>
+            {{#if shouldRetry}}
+              <button type="button" class="btn btn-danger" disabled={{isDeleting}} {{action "skipAndRetry"}}>{{fa-icon "step-forward"}} Skip</button>
+              <button type="button" class="btn btn-danger" disabled={{isDeleting}} {{action "skipAll"}}>{{fa-icon "fast-forward"}} Skip All</button>
+            {{/if}}
+          {{/unless}}
         </div>
       </div>
     </div>

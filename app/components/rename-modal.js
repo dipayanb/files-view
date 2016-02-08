@@ -21,7 +21,7 @@ export default Ember.Component.extend(OperationModal, {
 
   actions: {
     didOpenModal: function() {
-      //this.set('selectionName', this.get('selected.name'));
+      this.set('selectionName', this.get('selected.name'));
       // This was required as the DOM may not be visible due to animation in bootstrap modal
       Ember.run.later(() => {
         this.$('input').focus();

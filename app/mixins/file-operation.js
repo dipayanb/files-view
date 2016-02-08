@@ -22,5 +22,18 @@ export default Ember.Mixin.create({
     var adapter = this.get('store').adapterFor('file');
     var baseURL = adapter.buildURL('file');
     return baseURL.split('/');
+  },
+
+  extractError: function(error) {
+    if (Ember.isArray(error.errors) && (error.errors.length >= 0)) {
+      return error.errors[0];
+    }
+    return {};
+  },
+
+  isInvalidError: function(error) {
+    // This seems to a slight hack. But from backend the response of 422 is
+    // always a hash which has success param set and value is false
+    return Ember.isPresent(error.success) && error.success === false;
   }
 });

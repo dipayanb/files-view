@@ -34,6 +34,55 @@ export default Ember.Service.extend(FileOperationMixin, {
     });
   },
 
+  deletePaths: function(paths, deletePermanently = false) {
+    var opsUrl;
+    if(deletePermanently) {
+      opsUrl = this._getFileOperationUrl('remove');
+    } else {
+      opsUrl = this._getFileOperationUrl('moveToTrash');
+    }
+    var data = {
+      paths: paths.map((path) => {
+        return {path: path, recursive: true}
+      })
+    };
+    var adapter = this.get('store').adapterFor('file');
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      adapter.ajax(opsUrl, "DELETE", {data: data}).then(
+        (response) => {
+          return resolve(response);
+        }, (rejectResponse) => {
+          var error = this.extractError(rejectResponse);
+          if (this.isInvalidError(error)) {
+            return reject(this._prepareUnprocessableErrorResponse(error));
+          } else {
+            return reject(Ember.merge({retry: false, unprocessable: false}, error));
+          }
+        });
+    })
+  },
+
+  _checkIfDeleteRetryIsRequired: function(error) {
+    return error.unprocessed.length >= 1;
+  },
+
+  _prepareUnprocessableErrorResponse: function(error) {
+    var response = {};
+    response.unprocessable = true;
+    if (this._checkIfDeleteRetryIsRequired(error)) {
+      response.retry = true;
+      response.failed = error.failed[0];
+      response.message = error.message;
+      response.unprocessed = error.unprocessed;
+    } else {
+      response.retry = false;
+      response.failed = error.failed[0];
+      response.message = error.message;
+    }
+
+    return response;
+  },
+
   getUploadUrl: function() {
     var urlFragments = this._getBaseURLFragments();
     return urlFragments.slice(0, urlFragments.length - 2).join('/') + "/upload";

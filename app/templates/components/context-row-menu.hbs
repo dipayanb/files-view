@@ -11,7 +11,7 @@
       <li class={{if isMultiSelected "disabled"}}><a href="#" {{action "open"}}>{{fa-icon "folder-open-o" size="lg"}} Open</a></li>
       <li class={{if isMultiSelected "disabled"}}><a href="#" {{action "rename"}}>{{fa-icon "edit" size="lg"}} Rename</a></li>
       <li class={{if isMultiSelected "disabled"}}><a href="#" {{action "permission"}}>{{fa-icon "lock" size="lg"}} Permissions</a></li>
-      <li><a href="#" {{action "delete"}}>{{fa-icon "remove" size="lg"}} Delete</a></li>
+      <li><a href="#" {{action "delete"}}>{{fa-icon "trash" size="lg"}} Delete</a></li>
       <li><a href="#" {{action "copy"}}>{{fa-icon "file-o" size="lg"}} Copy </a></li>
       <li><a href="#" {{action "move"}}>{{fa-icon "share" size="lg"}} Move </a></li>
       <li><a href="#" {{action "download"}}>{{fa-icon "download" size="lg"}} Download </a></li>
@@ -22,7 +22,7 @@
     {{move-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-move"}}
     {{open-preview-modal closeModalAction="modalClosed" name="ctx-open"}}
     {{rename-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-rename"}}
-    {{delete-modal closeModalAction="modalClosed" name="ctx-delete"}}
+    {{delete-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-delete"}}
     {{permission-modal closeModalAction="modalClosed" name="ctx-permission"}}
   </div>
 {{else}}
