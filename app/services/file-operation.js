@@ -83,9 +83,23 @@ export default Ember.Service.extend(FileOperationMixin, {
     return response;
   },
 
-  getUploadUrl: function() {
+  getHome: function() {
+    var adapter = this.get('store').adapterFor('file');
+    return adapter.ajax(this._getMiscUrl("/help/home"), "GET");
+  },
+
+  getTrash: function() {
+    var adapter = this.get('store').adapterFor('file');
+    return adapter.ajax(this._getMiscUrl("/help/trashDir"), "GET");
+  },
+
+  _getMiscUrl: function(segment) {
     var urlFragments = this._getBaseURLFragments();
-    return urlFragments.slice(0, urlFragments.length - 2).join('/') + "/upload";
+    return urlFragments.slice(0, urlFragments.length - 2).join('/') + segment;
+  },
+
+  getUploadUrl: function() {
+    return this._getMiscUrl("/upload");
   },
 
   _getFileOperationUrl: function(pathFragment) {

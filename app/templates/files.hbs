@@ -1,10 +1,12 @@
 <div class="row">
   <div class="col-md-5">
-    {{files-breadcrumb path=path}}
+     {{files-breadcrumb path=path}}
   </div>
   <!-- Include directory name and rename button -->
   <div class="col-md-offset-2 col-md-5">
     <p class="pull-right">
+      {{#link-to 'files' (query-params path=homePath) class="btn btn-sm btn-default home-button"}}{{fa-icon "home"}}{{/link-to}}
+      {{#link-to 'files' (query-params path=trashPath) class="btn btn-sm btn-default home-button"}}{{fa-icon "trash"}}{{/link-to}}
       {{new-directory path=path refreshAction="refreshCurrentRoute"}}
       {{upload-file path=path refreshAction="refreshCurrentRoute"}}
     </p>
