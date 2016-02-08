@@ -10,34 +10,34 @@ import Ember from 'ember';
     options.status : Status XHR request if the message is a response to XHR request. Defaults to -1.
     options.error: Detailed error to be displayed.
   ```
-  Options required for ember-cli-flash can also be passed in the options to override the
+  Options required for ember-cli-flash can also be passed in the alertOptions to override the
   default behaviour.
 */
 export default Ember.Service.extend({
   flashMessages: Ember.inject.service('flash-messages'),
   store: Ember.inject.service('store'),
 
-  success: function(message, options = {}) {
-    this._clearMessagesIfRequired(options);
-    this._createAlert(message, 'success', options);
+  success: function(message, options = {}, alertOptions = {}) {
+    this._clearMessagesIfRequired(alertOptions);
+    this._createAlert(message, 'success', options, alertOptions);
     this.get('flashMessages').success(message, this._getOptions(options));
   },
 
-  warn: function(message, options = {}) {
-    this._clearMessagesIfRequired(options);
+  warn: function(message, options = {}, alertOptions = {}) {
+    this._clearMessagesIfRequired(alertOptions, alertOptions);
     this._createAlert(message, 'warn', options);
     this.get('flashMessages').warn(message, this._getOptions(options));
   },
 
-  info: function(message, options = {}) {
-    this._clearMessagesIfRequired(options);
-    this._createAlert(message, 'info', options);
+  info: function(message, options = {}, alertOptions = {}) {
+    this._clearMessagesIfRequired(alertOptions);
+    this._createAlert(message, 'info', options, alertOptions);
     this.get('flashMessages').info(message, this._getOptions(options));
   },
 
-  danger: function(message, options = {}) {
-    this._clearMessagesIfRequired(options);
-    this._createAlert(message, 'danger', options);
+  danger: function(message, options = {}, alertOptions = {}) {
+    this._clearMessagesIfRequired(alertOptions);
+    this._createAlert(message, 'danger', options, alertOptions);
     this.get('flashMessages').danger(message, this._getOptions(options));
   },
 
@@ -45,7 +45,7 @@ export default Ember.Service.extend({
     this.get('flashMessages').clearMessages();
   },
 
-  _createAlert: function(message, type, options) {
+  _createAlert: function(message, type, options, alertOptions) {
     var data = {};
     data.message = message;
     data.responseMessage = options.message || '';
@@ -56,7 +56,7 @@ export default Ember.Service.extend({
     delete options.status;
     delete options.error;
 
-    if(options.flashOnly !== true) {
+    if(alertOptions.flashOnly !== true) {
       return this.get('store').createRecord('alert', data);
     }
   },

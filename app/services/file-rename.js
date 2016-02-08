@@ -2,7 +2,7 @@ import Ember from 'ember';
 import FileOperationMixin from '../mixins/file-operation';
 
 export default Ember.Service.extend(FileOperationMixin, {
-  alertMessages: Ember.inject.service('alert-messages'),
+  logger: Ember.inject.service('alert-messages'),
 
   // Returns a promise for the operation. Upon sucess or error, this also
   // appropriately sends error messages.
@@ -20,13 +20,12 @@ export default Ember.Service.extend(FileOperationMixin, {
       var renameUrl = baseURL.substring(0, baseURL.lastIndexOf('/')) + "/rename";
       var data = {src: srcPath, dst: destPath};
       adapter.ajax(renameUrl, "POST", {data: data}).then((response) => {
-        this.get('alertMessages').success(`Successfully renamed ${srcPath} to ${destPath}.`);
+        this.get('logger').success(`Successfully renamed ${srcPath} to ${destPath}.`, {}, {flashOnly: true});
         resolve(response);
-      }, (error) => {
-        var errorJson = error.errors[0];
-        errorJson.retry = false;
-        this.get('alertMessages').danger(`Failed to rename ${srcPath} to ${destPath}`);
-        reject(errorJson);
+      }, (responseError) => {
+        var error = this.extractError(responseError);
+        this.get('logger').danger(`Failed to rename ${srcPath} to ${destPath}`, error);
+        reject(error);
       });
     });
   },

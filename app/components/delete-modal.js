@@ -4,6 +4,7 @@ import OperationModal from '../mixins/operation-modal';
 export default Ember.Component.extend(OperationModal, {
   fileSelectionService: Ember.inject.service('files-selection'),
   fileOperationService: Ember.inject.service('file-operation'),
+  logger: Ember.inject.service('alert-messages'),
   closeOnEscape: true,
   deletePermanently: false,
   selectedFiles: Ember.computed.alias('fileSelectionService.files'),
@@ -47,8 +48,7 @@ export default Ember.Component.extend(OperationModal, {
           this.set('currentUnprocessedPaths', error.unprocessed);
         } else {
           this.set('isDeleting', false);
-          console.log('Server error!!!');
-          // TODO: Alert and close;
+          logger.get('logger').danger("Failed to delete files and folders.", error);
           this.send('close');
         }
       });

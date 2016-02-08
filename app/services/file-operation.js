@@ -9,10 +9,12 @@ export default Ember.Service.extend(FileOperationMixin, {
     return new Ember.RSVP.Promise((resolve, reject) => {
       adapter.ajax(this._getFileOperationUrl('chmod'), "POST", {data: data}).then(
         (response) => {
+          this.get('logger').success(`Successfully changed permission of ${path}`, {}, {flashOnly: true});
           return resolve(response);
-        }, (error) => {
-          // TODO: Log Here....
-          return reject();
+        }, (responseError) => {
+          var error = this.extractError(responseError);
+          this.get('logger').danger(`Failed to modify permission of ${path}`, error);
+          return reject(error);
         });
     });
   },
@@ -26,9 +28,11 @@ export default Ember.Service.extend(FileOperationMixin, {
     return new Ember.RSVP.Promise((resolve, reject) => {
       adapter.ajax(this._getFileOperationUrl('mkdir'), "PUT", {data: data}).then(
         (response) => {
-          // TODO: Log here....
+          this.get('logger').success(`Successfully created ${path}`, {}, {flashOnly: true});
           return resolve(response);
         }, (error) => {
+          var error = this.extractError(responseError);
+          this.get('logger').danger(`Failed to create ${path}`, error);
           return reject(error);
         });
     });

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import FileOperationMixin from '../mixins/file-operation';
 
 export default Ember.Service.extend(FileOperationMixin, {
-  alertMessages: Ember.inject.service('alert-messages'),
+  logger: Ember.inject.service('alert-messages'),
 
   // Returns a promise for the operation. Upon sucess or error, this also
   // appropriately sends error messages.
@@ -33,12 +33,11 @@ export default Ember.Service.extend(FileOperationMixin, {
       var moveUrl = baseURL.substring(0, baseURL.lastIndexOf('/')) + "/copy";
       var data = {src: srcPath, dst: destPath};
       adapter.ajax(moveUrl, "POST", {data: data}).then((response) => {
-        this.get('alertMessages').success(`Successfully copied to ${destPath}.`);
+        this.get('logger').success(`Successfully copied to ${destPath}.`, {}, {flashOnly: true});
         resolve(response);
-      }, (error) => {
-        var errorJson = error.errors[0];
-        errorJson.retry = false;
-        this.get('alertMessages').danger(`Failed to copy to ${destPath}`);
+      }, (responseError) => {
+        var error = this.extractError(responseError);
+        this.get('logger').danger(`Failed to copy to ${destPath}`, error);
         reject(errorJson);
       });
     });

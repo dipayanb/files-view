@@ -40,11 +40,11 @@ export default Ember.Service.extend(FileOperationMixin, {
             if(response.allowed) {
               window.location.href = this._getDownloadUrl(entry.get('path'));
               resolve();
-            } else {
-              reject();
             }
-          }, (error) => {
-            reject();
+          }, (rejectResponse) => {
+            var error = this.extractError(rejectResponse);
+            this.get('logger').danger("Failed to download file.", error);
+            reject(error);
           });
     });
   },
@@ -61,10 +61,11 @@ export default Ember.Service.extend(FileOperationMixin, {
           var downloadZipLink = this._getDownloadZipUrl(response.requestId);
           window.location.href = downloadZipLink;
           resolve();
-        }, (error) => {
+        }, (rejectResponse) => {
           //TODO: Need to do alerts and logging.
-          this._logError("Failed to download the folder!!!");
-          reject("Failed to download the folder!!!");
+          var error = this.extractError(rejectResponse);
+          this.get('logger').danger("Failed to download Zip.", error);
+          reject(error);
         });
     });
   },
@@ -82,10 +83,11 @@ export default Ember.Service.extend(FileOperationMixin, {
           var downloadConcatLink = this._getDownloadConcatUrl(response.requestId);
           window.location.href = downloadConcatLink;
           resolve();
-        }, (error) => {
+        }, (rejectResponse) => {
           //TODO: Need to do alerts and logging.
-          this._logError("Failed to download the folder!!!");
-          reject("Failed to download the folder!!!");
+          var error = this.extractError(rejectResponse);
+          this.get('logger').danger("Failed to concatenate files.", error);
+          reject(error);
         });
     });
   },
@@ -131,7 +133,7 @@ export default Ember.Service.extend(FileOperationMixin, {
   },
 
   _logError: function(message, error) {
-    this.get('logger').danger(message, {flashOnly: true});
+    this.get('logger').danger(message, error);
   }
 
 });
