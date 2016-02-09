@@ -4,6 +4,12 @@ import columnConfig from '../config/files-columns';
 export default Ember.Controller.extend({
   fileSelectionService: Ember.inject.service('files-selection'),
   messagesController: Ember.inject.controller('messages'),
+  lastSelectedFile: Ember.computed.oneWay('fileSelectionService.lastFileSelected'),
+  selectedFilesCount: Ember.computed.oneWay('fileSelectionService.filesCount'),
+  selectedFolderCount: Ember.computed.oneWay('fileSelectionService.folderCount'),
+  isSelected: Ember.computed('selectedFilesCount', 'selectedFolderCount', function() {
+    return (this.get('selectedFilesCount') + this.get('selectedFolderCount')) !== 0;
+  }),
 
   queryParams: ['path'],
   path: '/',

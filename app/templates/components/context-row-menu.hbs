@@ -1,11 +1,4 @@
 {{#if isSelected}}
-  <div class="context-text">
-    {{#if isSingleSelected}}
-      <strong>{{lastSelectedFile.name}}</strong> selected
-    {{else}}
-      <strong>{{selectedFilesCount}}</strong> Files, <strong>{{selectedFolderCount}}</strong> Folders selected
-    {{/if}}
-  </div>
   <div class="col-md-12">
     <ul class="list-inline context-menu-entries">
       <li class={{if isMultiSelected "disabled"}}><a href="#" {{action "open"}}>{{fa-icon "folder-open-o" size="lg"}} Open</a></li>
@@ -24,9 +17,5 @@
     {{rename-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-rename"}}
     {{delete-modal closeModalAction="modalClosed" refreshAction="refreshCurrentRoute" name="ctx-delete"}}
     {{permission-modal closeModalAction="modalClosed" name="ctx-permission"}}
-  </div>
-{{else}}
-  <div class="context-text">
-    Total: <strong>{{entriesCount}}</strong> files or folders
   </div>
 {{/if}}

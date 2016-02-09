@@ -1,15 +1,39 @@
+<div class="row" >
+  <div class="col-md-12 text-center context-text-row">
+    {{#if isSelected}}
+      <span class="context-text">
+        {{#if isSingleSelected}}
+          <strong>{{lastSelectedFile.name}}</strong> selected
+        {{else}}
+          <strong>{{selectedFilesCount}}</strong> Files, <strong>{{selectedFolderCount}}</strong> Folders selected
+        {{/if}}
+      </span>
+    {{else}}
+      <span class="context-text" style="    z-index: 1;
+      position: relative;">
+        Total: <strong>{{arrangedContent.length}}</strong> files or folders
+      </span>
+    {{/if}}
+  </div>
+</div>
 <div class="row">
-  <div class="col-md-5">
-     {{files-breadcrumb path=path}}
+  <div class="col-md-6">
+    {{#link-to 'files' (query-params path=homePath) class="btn btn-sm btn-default"}}{{fa-icon "home"}}{{/link-to}}
+    {{#link-to 'files' (query-params path=trashPath) class="btn btn-sm btn-default"}}{{fa-icon "trash"}}{{/link-to}}
+    {{files-breadcrumb path=path}}
   </div>
   <!-- Include directory name and rename button -->
-  <div class="col-md-offset-2 col-md-5">
+  <div class="col-md-6">
     <p class="pull-right">
-      {{#link-to 'files' (query-params path=homePath) class="btn btn-sm btn-default"}}{{fa-icon "home"}}{{/link-to}}
-      {{#link-to 'files' (query-params path=trashPath) class="btn btn-sm btn-default"}}{{fa-icon "trash"}}{{/link-to}}
+      <button class="btn btn-sm btn-primary" {{action "selectAll" allSelected}}>
+        {{#unless allSelected}}
+          {{fa-icon icon="plus" }} Select All
+        {{else}}
+          {{fa-icon icon="minus"}} Deselect All
+        {{/unless}}
+      </button>
       {{new-directory path=path refreshAction="refreshCurrentRoute"}}
       {{upload-file path=path refreshAction="refreshCurrentRoute"}}
-      {{!--#link-to 'messages' class="btn btn-sm btn-default"}}{{fa-icon "comment-o"}}{{/link-to--}}
       <a href="#" class="btn btn-sm btn-default" {{action "transitionToMessages"}}>{{fa-icon "comment-o"}}</a>
     </p>
   </div>
@@ -23,18 +47,9 @@
         refreshCurrentRouteAction="refreshCurrentRoute"
       }}
     </div>
-    <div class="col-md-3">
-      {{file-search searchText=searchText searchAction="searchFiles"}}
-    </div>
-    <div class="col-md-1">
+    <div class="col-md-4">
       <div class="row">
-      <button class="btn btn-sm btn-primary btn-block" {{action "selectAll" allSelected}}>
-        {{#unless allSelected}}
-          {{fa-icon icon="plus" size="lg"}} Select All
-        {{else}}
-          {{fa-icon icon="minus" size="lg"}} Deselect All
-        {{/unless}}
-      </button>
+        {{file-search searchText=searchText searchAction="searchFiles"}}
       </div>
     </div>
   </div>

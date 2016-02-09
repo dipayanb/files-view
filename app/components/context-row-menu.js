@@ -21,7 +21,7 @@ export default Ember.Component.extend({
   isOnlyMultiFilesSelected: Ember.computed('selectedFilesCount', 'selectedFolderCount', function() {
     return this.get('selectedFolderCount') === 0 && this.get('selectedFilesCount') > 1;
   }),
-  lastSelectedFile: Ember.computed.oneWay('fileSelectionService.lastFileSelected'),
+
 
   didInitAttrs: function() {
     // Register different modal so that they can be controlled from outside

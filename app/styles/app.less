@@ -9,7 +9,12 @@
 @breadcrumb-bg: @body-bg;
 @breadcrumb-separator: ">";
 .breadcrumb {
-  margin-bottom: 0px;
+  display: inline;
+  padding-left: 5px;
+  li {
+    position: relative;
+    top: 2px;
+  }
 }
 
 
@@ -25,6 +30,7 @@ body {
 .container-wrap {
   margin-top: 5px;
 }
+
 
 .files-header {
   padding-bottom: 10px;
@@ -47,6 +53,20 @@ body {
   background-color: lighten(@component-active-bg, 40%) !important;
 }
 
+
+
+.context-text-row {
+  position: absolute;
+  .context-text {
+    position: relative;
+    display: inline-block;
+    padding: 5px 20px;
+    background: darken(@state-warning-bg, 25%);
+    border: 1px solid @state-warning-border;
+    border-radius: @border-radius-large;
+  }
+}
+
 .context-menu-row {
   padding-top: 5px;
     li > a {
@@ -55,16 +75,6 @@ body {
     li.disabled > a {
       color: @gray-light;
       cursor: default;
-    }
-
-    .context-text {
-      padding: 2px 17px;
-      background: darken(@state-warning-bg, 25%);
-      border: 1px solid @state-warning-border;
-      position: absolute;
-      border-radius: @border-radius-large;
-      margin-top: 25px;
-      left: 0px;
     }
 
     .context-menu-entries {
@@ -110,4 +120,8 @@ body {
   z-index: 1000;
   border-radius: @border-radius-large;
   background-color: darken(@state-warning-bg, 25%);
+}
+
+.well-sm {
+  margin-bottom: 10px;
 }

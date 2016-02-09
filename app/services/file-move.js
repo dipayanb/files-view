@@ -32,7 +32,7 @@ export default Ember.Service.extend(FileOperationMixin, {
       var moveUrl = baseURL.substring(0, baseURL.lastIndexOf('/')) + "/rename";
       var data = {src: srcPath, dst: destPath};
       adapter.ajax(moveUrl, "POST", {data: data}).then((response) => {
-        this.get('logger').success(`Successfully moved to ${destPath}.`, {}., {flashOnly: true});
+        this.get('logger').success(`Successfully moved to ${destPath}.`, {}, {flashOnly: true});
         resolve(response);
       }, (responseError) => {
         var error = this.extractError(responseError);
