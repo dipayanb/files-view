@@ -9,7 +9,7 @@ export default Ember.Service.extend(FileOperationMixin, {
     return new Ember.RSVP.Promise((resolve, reject) => {
       adapter.ajax(this._getFileOperationUrl('chmod'), "POST", {data: data}).then(
         (response) => {
-          this.get('logger').success(`Successfully changed permission of ${path}`, {}, {flashOnly: true});
+          this.get('logger').success(`Successfully changed permission of ${path}`, {}, {flashOnly: false});
           return resolve(response);
         }, (responseError) => {
           var error = this.extractError(responseError);
@@ -28,11 +28,11 @@ export default Ember.Service.extend(FileOperationMixin, {
     return new Ember.RSVP.Promise((resolve, reject) => {
       adapter.ajax(this._getFileOperationUrl('mkdir'), "PUT", {data: data}).then(
         (response) => {
-          this.get('logger').success(`Successfully created ${path}`, {}, {flashOnly: true});
+          this.get('logger').success(`Successfully created ${path}/${folderName}`, {}, {flashOnly: false});
           return resolve(response);
-        }, (error) => {
+        }, (responseError) => {
           var error = this.extractError(responseError);
-          this.get('logger').danger(`Failed to create ${path}`, error);
+          this.get('logger').danger(`Failed to create ${path}/${folderName}`, error);
           return reject(error);
         });
     });

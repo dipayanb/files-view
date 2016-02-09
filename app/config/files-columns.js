@@ -8,7 +8,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-5'
+    columnClass: 'col-md-4'
   },
   {
     title: 'Size',
@@ -32,7 +32,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-1'
+    columnClass: 'col-md-2'
   },
   {
     title: 'Group',

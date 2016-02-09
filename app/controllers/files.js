@@ -3,6 +3,7 @@ import columnConfig from '../config/files-columns';
 
 export default Ember.Controller.extend({
   fileSelectionService: Ember.inject.service('files-selection'),
+  messagesController: Ember.inject.controller('messages'),
 
   queryParams: ['path'],
   path: '/',
@@ -38,10 +39,6 @@ export default Ember.Controller.extend({
   }),
 
   sortedContent: Ember.computed.sort('model', 'sortProperty'),
-
-  resetSelection: Ember.observer('path', function() {
-    this.get('fileSelectionService').reset();
-  }),
 
   arrangedContent: Ember.computed('model', 'sortProperty', 'validSearchText', function() {
     var searchText = this.get('validSearchText');
@@ -112,6 +109,11 @@ export default Ember.Controller.extend({
     //Context Menu actions
     openFolder: function(path) {
       this.transitionToRoute({queryParams: {path: path}});
+    },
+
+    transitionToMessages: function() {
+      this.get('messagesController').set('currentBrowserPath', this.get('path'));
+      this.transitionToRoute('messages');
     }
   },
 

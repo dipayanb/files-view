@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+  <div class="panel-heading">{{model.message}}</div>
+  <div class="panel-body">
+    <div><strong>Server Response</strong></div>
+    <div>{{shorten-text model.responseMessage 200}}</div>
+
+    <div><strong>Trace</strong></div>
+    <div><pre class="prettyprint"><small>{{model.trace}}</small></pre></div>
+  </div>
+</div>

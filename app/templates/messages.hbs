@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12 well well-sm">
+    <div class="col-md-1">
+      {{#link-to "files" (query-params path=currentBrowserPath) class="btn btn-primary"}}{{fa-icon "arrow-left"}} Browser{{/link-to}}
+    </div>
+    <div class="col-md-2 col-md-offset-4 text-center">
+      <h4>{{fa-icon "comment"}} Messages</h4>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class={{if isExpanded "col-md-12" "col-md-4"}}>
+    <div class="list-group">
+      {{#each model as |message|}}
+        {{#link-to 'messages.message' message class="list-group-item"}}
+          <h4 class="list-group-item-heading">{{message.message}}</h4>
+          <p class="list-group-item-text">{{shorten-text message.responseMessage shortenLenght}}</p>
+        {{/link-to}}
+      {{else}}
+        No messages present
+      {{/each}}
+    </div>
+
+  </div>
+  {{#unless isExpanded}}
+    <div class="col-md-8">
+      {{outlet}}
+    </div>
+  {{/unless}}
+</div>
+

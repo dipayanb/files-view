@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  fileSelectionService: Ember.inject.service('files-selection'),
   queryParams: {
     path: {
       refreshModel: true
@@ -14,6 +15,7 @@ export default Ember.Route.extend({
   afterModel: function() {
     var fileController = this.controllerFor('files');
     fileController.set('searchText', '');
+    this.get('fileSelectionService').reset();
   },
 
   actions: {

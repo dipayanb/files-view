@@ -5,6 +5,7 @@ import FileUploader from '../utils/file-uploader';
 export default Ember.Component.extend(OperationModal, {
   modalEventBus: Ember.inject.service('modal-event-bus'),
   fileOperationService: Ember.inject.service('file-operation'),
+  logger: Ember.inject.service('alert-messages'),
   tagName: "span",
   closeOnEscape: true,
   name: 'ctx-uploader',
@@ -59,8 +60,10 @@ export default Ember.Component.extend(OperationModal, {
           this.sendAction('refreshAction');
         });
         uploader.on('didError', (jqXHR, textStatus, errorThrown) => {
+          var error = Ember.$.parseJSON(jqXHR.responseText);
+          this.get('logger').danger(`Failed to upload ${file.name} to ${this.get('path')}`, error);
           this.send('close');
-          //TODO: log error!!!!
+          return false;
         });
       }
 
