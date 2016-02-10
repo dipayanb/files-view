@@ -1,15 +1,18 @@
 import Ember from 'ember';
+import FileOperationMixin from '../mixins/file-operation';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FileOperationMixin, {
 
   selectedFolderPath: '',
-  initUrl: '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/fileops/listdir?path=%2F',
-
+  revealPathName: Ember.computed.alias('revealPath'),
+  initPath: '?path=%2F',
   didInsertElement: function() {
     var _self = this, result = [];
+    var adapter = _self.get('store').adapterFor('file');
+    var baseURL = adapter.buildURL('file');
 
     var init = function(url, parent){
-    $.ajax({
+    return Ember.$.ajax({
          url: url,
          type: 'GET',
          accepts: 'application/json',
@@ -25,36 +28,36 @@ export default Ember.Component.extend({
                   }
              }
 
+             var temp = '';
              if(parent !== null){
                //This will run only after first level is generated
-               var temp = '';
                var arr =  parent.split('');
-               for(var i=0; i < arr.length; i++){
-                 temp = temp + "[" + arr[i] + "]" + "['nodes']";
+               for(var j=0; j < arr.length; j++){
+                 temp = temp + "[" + arr[j] + "]" + "['nodes']";
                }
                eval('result' + temp  + '= []');
              }
 
              var dirRecordsLength = dirRecords.files.length;
-             for(var i = 0; i < dirRecordsLength; i++ ) {
-                var tempJson = {}
-                var recordsArr = dirRecords.files[i].path.split('/');
+             for(var k = 0; k < dirRecordsLength; k++ ) {
+                var tempJson = {};
+                var recordsArr = dirRecords.files[k].path.split('/');
 
                 tempJson['text'] = recordsArr[recordsArr.length-1];  // setting text property to JSON
-                tempJson['completepath'] = dirRecords.files[i].path; // setting completepath property to JSON
+                tempJson['completepath'] = dirRecords.files[k].path; // setting completepath property to JSON
 
                 if(parent !== null){
                    //This will run only after first level is generated
-                   tempJson['parent'] =  parent.toString() + i.toString();
+                   tempJson['parent'] =  parent.toString() + k.toString();
                    eval('result' + temp).push(tempJson);
                 } else {
                    //This will run only once when first level is generated
-                   tempJson['parent'] = i.toString();
+                   tempJson['parent'] = k.toString();
                    result.push(tempJson);
                 }
              }
 
-              $('#tree').treeview( {
+              $('#tree').treeview({
                 data: result,
                 levels: 1,
                 showIcon: false,
@@ -68,27 +71,24 @@ export default Ember.Component.extend({
                    var $treeElmnt = $(event.target);
                    var $treeElmntScrollHeight = $treeElmnt.scrollTop();
 
-                   var dirUrl = '/api/v1/views/FILES/versions/1.0.0/instances/Files/resources/files/fileops/listdir?path=' + data.completepath;
+                   var dirUrl = baseURL +'?path=' + data.completepath;
 
-                   init(dirUrl, data.parent);
+                   init(dirUrl, data.parent).then(function(response){
+                       /* Below lines get execute for successful callback. */
+                       $('#tree').treeview('expandNode', [ data.nodeId, { silent: true } ]);
+                       $('#tree').treeview('revealNode', [ data.nodeId, { silent: true } ]);
+                       $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
 
+                       $treeElmnt.scrollTop($treeElmntScrollHeight);
 
-                   setTimeout(function(){
-                     /* TODO :: Use Ember promise for this and exceute the below lines only after geeting successful callback.  */
-
-                      $('#tree').treeview('expandNode', [ data.nodeId, { silent: true } ]);
-                      $('#tree').treeview('revealNode', [ data.nodeId, { silent: true } ]);
-                      $('#tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
-
-                      $treeElmnt.scrollTop($treeElmntScrollHeight);
-
-                      _self.set('selectedFolderPath', data.completepath );
-                      _self.send('setSelectedFolder', _self.get('selectedFolderPath')); // send the path as param
-
-                   },250);
-
+                       _self.set('selectedFolderPath', data.completepath );
+                       _self.send('setSelectedFolder', _self.get('selectedFolderPath')); // send the path as param
+                   },
+                   function(error){
+                      console.log('Fail to retrieve directories through init function.');
+                   });
                 }}
-             )
+             );
          },
          error: function() {
              console.log('Error in retrieving the directorties.');
@@ -96,7 +96,8 @@ export default Ember.Component.extend({
       });
   };
 
-  init(this.initUrl , null);
+  init(baseURL + this.initPath , null);
+  /* TODO:: open all the nodes of revealPathName . */
 
   },
   actions: {

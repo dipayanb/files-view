@@ -6,7 +6,7 @@
                     <h3 class="modal-title">Move to ...</h3>
                 </div>
                 <div class="modal-body">
-                    {{directory-viewer }}
+                    {{directory-viewer revealPath=selected.path}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default {{if isUpdating "disabled"}}" {{action 'close'}}>{{fa-icon icon="close"}} Cancel</button>

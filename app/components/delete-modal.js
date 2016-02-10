@@ -48,7 +48,7 @@ export default Ember.Component.extend(OperationModal, {
           this.set('currentUnprocessedPaths', error.unprocessed);
         } else {
           this.set('isDeleting', false);
-          logger.get('logger').danger("Failed to delete files and folders.", error);
+          this.get('logger').danger("Failed to delete files and folders.", error);
           this.send('close');
         }
       });
