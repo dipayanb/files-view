@@ -20,6 +20,9 @@ export default Ember.Service.extend(FileOperationMixin, {
   },
 
   createNewFolder: function(path, folderName) {
+
+    var path =  (path == '/') ? '' : path;
+
     if(folderName.slice(0, 1) === '/') {
       folderName = folderName.slice(0, folderName.length);
     }
