@@ -1,5 +1,5 @@
 <div class="row" >
-  <div class="col-md-12 text-center context-text-row">
+  <div class="col-md-12 col-xs-12 text-center context-text-row">
     {{#if isSelected}}
       <span class="context-text">
         {{#if isSingleSelected}}
@@ -17,13 +17,13 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 col-xs-6">
     {{#link-to 'files' (query-params path=homePath) class="btn btn-sm btn-default"}}{{fa-icon "home"}}{{/link-to}}
     {{#link-to 'files' (query-params path=trashPath) class="btn btn-sm btn-default"}}{{fa-icon "trash"}}{{/link-to}}
     {{files-breadcrumb path=path}}
   </div>
   <!-- Include directory name and rename button -->
-  <div class="col-md-6">
+  <div class="col-md-6 col-xs-6">
     <p class="pull-right">
       <button class="btn btn-sm btn-primary" {{action "selectAll" allSelected}}>
         {{#unless allSelected}}
@@ -40,14 +40,14 @@
 </div>
 
 <div class="row">
-  <div class="well well-sm col-md-12">
-    <div class="col-md-8">
+  <div class="well well-sm col-md-12 col-xs-12">
+    <div class="col-md-8 col-xs-8">
       {{context-row-menu entriesCount=arrangedContent.length
         openFolderAction="openFolder"
         refreshCurrentRouteAction="refreshCurrentRoute"
       }}
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 col-xs-4">
       <div class="row">
         {{file-search searchText=searchText searchAction="searchFiles"}}
       </div>
@@ -56,7 +56,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12" id="filesCollectionView">
+  <div class="col-md-12 col-xs-12" id="filesCollectionView">
     {{#files-collection items=arrangedContent
       columnsConfig=columns
       sortEnabled=sortEnabled

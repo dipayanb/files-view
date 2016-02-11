@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12 files-header">
+  <div class="col-md-12 col-xs-12 files-header">
     {{#each columnsConfig as |column|}}
       <div class={{column.columnClass}} {{action 'rotateSort' column}}>
         <strong>{{column.title}}</strong>
@@ -14,12 +14,12 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 col-xs-12">
     {{#unless isEmptyParentPath}}
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 col-xs-12">
           {{#link-to 'files' (query-params path=parentPath)}}
-            <div class="col-md-12 file-row">
+            <div class="col-md-12 col-xs-12 file-row">
               {{fa-icon "fa-reply"}}
             </div>
           {{/link-to}}

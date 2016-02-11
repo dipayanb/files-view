@@ -8,7 +8,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-4'
+    columnClass: 'col-md-4 col-xs-4'
   },
   {
     title: 'Size',
@@ -16,7 +16,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-1'
+    columnClass: 'col-md-1 col-xs-1'
   },
   {
     title: 'Last Modified',
@@ -24,7 +24,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-2'
+    columnClass: 'col-md-2 col-xs-2'
   },
   {
     title: 'Owner',
@@ -32,7 +32,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-2'
+    columnClass: 'col-md-2 col-xs-2'
   },
   {
     title: 'Group',
@@ -40,7 +40,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: true,
     sortOrder: 0,
-    columnClass: 'col-md-1'
+    columnClass: 'col-md-1 col-xs-1'
   },
   {
     title: 'Permission',
@@ -48,7 +48,7 @@ var columnsConfig = [
     isVisible: true,
     sortable: false,
     sortOrder: 0,
-    columnClass: 'col-md-2'
+    columnClass: 'col-md-2 col-xs-2'
   }
 ];
 
