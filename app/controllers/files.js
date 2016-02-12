@@ -15,6 +15,9 @@ export default Ember.Controller.extend({
   path: '/',
   columns: columnConfig,
 
+  hasHomePath: false,
+  hasTrashPath: false,
+
   // This is required as the validSearchText will be debounced and will not be
   // called at each change of searchText. searchText is required so that sub
   // components(file search componenet) UI can be cleared from outside.(i.e, from

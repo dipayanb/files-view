@@ -18,8 +18,12 @@
 </div>
 <div class="row">
   <div class="col-md-6 col-xs-6">
-    {{#link-to 'files' (query-params path=homePath) class="btn btn-sm btn-default"}}{{fa-icon "home"}}{{/link-to}}
-    {{#link-to 'files' (query-params path=trashPath) class="btn btn-sm btn-default"}}{{fa-icon "trash"}}{{/link-to}}
+    {{#if hasHomePath}}
+      {{#link-to 'files' (query-params path=homePath) class="btn btn-sm btn-default"}}{{fa-icon "home"}}{{/link-to}}
+    {{/if}}
+    {{#if hasTrashPath}}
+        {{#link-to 'files' (query-params path=trashPath) class="btn btn-sm btn-default"}}{{fa-icon "trash"}}{{/link-to}}
+    {{/if}}
     {{files-breadcrumb path=path}}
   </div>
   <!-- Include directory name and rename button -->
